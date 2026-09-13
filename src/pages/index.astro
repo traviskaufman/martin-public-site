@@ -1,16 +1,11 @@
 ---
+import Pitch from "../layouts/Pitch.astro";
+import LicenseKeyButton from "../components/LicenseKeyButton.astro";
+import { headline, pitch } from "../pitch";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-  </body>
-</html>
+<Pitch>
+  <h1>{headline}</h1>
+  <p>{pitch}</p>
+  <LicenseKeyButton />
+</Pitch>
