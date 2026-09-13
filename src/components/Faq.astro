@@ -1,0 +1,35 @@
+---
+import { faq } from "../faq";
+---
+
+<section aria-labelledby="faq">
+  <h2 id="faq">FAQ</h2>
+  <dl>
+    {faq.map(({ question, answer }) => (
+      <div>
+        <dt>{question}</dt>
+        <dd>{answer}</dd>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<style>
+  dl {
+    margin: 0;
+  }
+
+  div + div {
+    margin-top: 1rem;
+  }
+
+  dt {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+</style>
