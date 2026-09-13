@@ -19,45 +19,128 @@ const comparisonsByHeading = new Map(
 ---
 
 <Pitch>
-  <h1>{headline}</h1>
-  <p>{pitch}</p>
-  <p class="actions">
-    <LicenseKeyButton />
-    <SourceLink />
-  </p>
-  <Differentiators />
-  {comparisonHeadings.map((heading) => {
-    const data = comparisonsByHeading.get(heading);
-    if (data) {
-      return (
-        <Comparison
-          heading={data.heading}
-          prompt={data.prompt}
-          vanilla={data.vanilla}
-          martin={data.martin}
-          differentiator={data.differentiator}
-        />
-      );
-    }
-    return (
-      import.meta.env.DEV && (
-        <section class="comparison-placeholder">
-          <h2>{heading}</h2>
-          <p>I haven't run this one yet — check back soon.</p>
-        </section>
-      )
-    );
-  })}
-  <WhyTravisBuiltMe />
-  <AfterYouPay />
-  <Faq />
+  <div class="tracks">
+    <div class="content">
+      <section class="hero">
+        <h1 id="hero">{headline}</h1>
+        <p class="pitch">{pitch}</p>
+        <div class="actions">
+          <LicenseKeyButton />
+          <p class="built">
+            I built this site. <SourceLink />
+          </p>
+        </div>
+      </section>
+      <Differentiators />
+      {comparisonHeadings.map((heading) => {
+        const data = comparisonsByHeading.get(heading);
+        if (data) {
+          return (
+            <Comparison
+              heading={data.heading}
+              prompt={data.prompt}
+              vanilla={data.vanilla}
+              martin={data.martin}
+              differentiator={data.differentiator}
+            />
+          );
+        }
+        return (
+          import.meta.env.DEV && (
+            <section class="comparison-placeholder">
+              <h2>{heading}</h2>
+              <p>I haven't run this one yet — check back soon.</p>
+            </section>
+          )
+        );
+      })}
+      <WhyTravisBuiltMe />
+      <AfterYouPay />
+      <Faq />
+    </div>
+  </div>
 </Pitch>
 
 <style>
+  .tracks {
+    display: grid;
+    grid-template-columns: minmax(0, 38.75rem) minmax(0, 35rem);
+    justify-content: center;
+    column-gap: 5rem;
+    padding: 6rem 5.625rem 0;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 8rem;
+    min-width: 0;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    min-height: 35rem;
+  }
+
+  .pitch {
+    font-size: 1.25rem;
+    line-height: 2rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+  }
+
+  .built {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+  }
+
   .comparison-placeholder {
     padding: 1rem;
     border: 1px dashed var(--color-border);
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
     color: var(--color-text-muted);
+  }
+
+  @media (max-width: 1199px) {
+    .tracks {
+      column-gap: 2.5rem;
+      padding-inline: 2.5rem;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .tracks {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 4rem 1.5rem 0;
+    }
+
+    .content {
+      gap: 6rem;
+    }
+
+    .hero {
+      gap: 1.5rem;
+      min-height: 0;
+    }
+
+    .pitch {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+    }
+
+    .actions {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 </style>

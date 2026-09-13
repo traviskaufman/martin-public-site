@@ -45,11 +45,13 @@ const headingId = `comparison-${heading.toLowerCase().replace(/\s+/g, "-")}`;
 
   .differentiator {
     margin: 0;
-    color: var(--color-text-muted);
-    font-size: 0.8rem;
-    font-weight: 600;
+    color: var(--color-accent-text);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.045rem;
   }
 
   .columns {
@@ -119,7 +121,7 @@ const headingId = `comparison-${heading.toLowerCase().replace(/\s+/g, "-")}`;
     padding: 0;
     border: none;
     background: none;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;

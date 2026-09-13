@@ -1,0 +1,104 @@
+---
+const { command } = Astro.props;
+---
+
+<div class="code-block">
+  <pre><span class="prompt">$</span> <code>{command}</code></pre>
+  <button
+    type="button"
+    class="copy"
+    aria-label="Copy command"
+    data-command={command}
+  >
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M12 5.5H7C6.17157 5.5 5.5 6.17157 5.5 7V12C5.5 12.8284 6.17157 13.5 7 13.5H12C12.8284 13.5 13.5 12.8284 13.5 12V7C13.5 6.17157 12.8284 5.5 12 5.5Z"
+        stroke="currentColor"
+        stroke-width="1.4"
+      ></path>
+      <path
+        d="M10.5 5.5V3.5C10.5 3.23478 10.3946 2.98043 10.2071 2.79289C10.0196 2.60536 9.76522 2.5 9.5 2.5H3.5C3.23478 2.5 2.98043 2.60536 2.79289 2.79289C2.60536 2.98043 2.5 3.23478 2.5 3.5V9.5C2.5 9.76522 2.60536 10.0196 2.79289 10.2071C2.98043 10.3946 3.23478 10.5 3.5 10.5H5.5"
+        stroke="currentColor"
+        stroke-width="1.4"
+      ></path>
+    </svg>
+    <span class="copied">Copied ✓</span>
+  </button>
+</div>
+
+<style>
+  .code-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--color-terminal-border);
+    border-radius: var(--radius-md);
+    background: var(--color-terminal-bg);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+  }
+
+  pre {
+    margin: 0;
+    min-width: 0;
+    overflow-x: auto;
+    color: var(--color-terminal-bright);
+  }
+
+  .prompt {
+    color: var(--color-terminal-prompt);
+  }
+
+  .copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--color-terminal-dim);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .copy svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .copy:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .copied {
+    display: none;
+    color: var(--color-terminal-prompt);
+  }
+
+  .copy.copied svg {
+    display: none;
+  }
+
+  .copy.copied .copied {
+    display: inline;
+  }
+</style>
+
+<script>
+  document
+    .querySelectorAll<HTMLButtonElement>(".code-block .copy")
+    .forEach((button) => {
+      if (!navigator.clipboard) {
+        return;
+      }
+      button.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(button.dataset.command ?? "");
+        button.classList.add("copied");
+        setTimeout(() => button.classList.remove("copied"), 1500);
+      });
+    });
+</script>

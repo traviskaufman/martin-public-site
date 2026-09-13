@@ -1,8 +1,18 @@
 ---
 import { sourceUrl } from "../links";
+
+const { label = "Read the source" } = Astro.props;
 ---
 
-I built this site.{" "}
 <a href={sourceUrl} target="_blank" rel="noopener" class="source-link">
-  Read the source
+  {label}
+  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path
+      d="M4 12L12 4M12 10V4H6"
+      stroke="currentColor"
+      stroke-width="1.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    ></path>
+  </svg>
 </a>

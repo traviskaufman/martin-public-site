@@ -1,0 +1,65 @@
+---
+const { number, title, sentence } = Astro.props;
+const numeral = String(number).padStart(2, "0");
+---
+
+<li class="panel" data-differentiator={title}>
+  <span class="numeral" aria-hidden="true">
+    {numeral}
+  </span>
+  <div class="copy">
+    <strong>{title}</strong>
+    <p>{sentence}</p>
+  </div>
+</li>
+
+<style>
+  .panel {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition:
+      border-color 150ms,
+      background-color 150ms;
+  }
+
+  .panel.active {
+    border-color: var(--color-accent);
+    background: var(--color-surface);
+  }
+
+  .numeral {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.045rem;
+  }
+
+  .panel.active .numeral {
+    color: var(--color-accent-text);
+  }
+
+  .copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  strong {
+    color: var(--color-heading);
+    font-size: 1.375rem;
+    line-height: 1.875rem;
+    font-weight: 500;
+    letter-spacing: -0.01375rem;
+  }
+
+  p {
+    font-size: 0.9375rem;
+    line-height: 1.5rem;
+  }
+</style>

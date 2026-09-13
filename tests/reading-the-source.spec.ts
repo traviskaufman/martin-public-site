@@ -23,11 +23,17 @@ test("The site says who built it", async ({ page }) => {
 
   const sourceHandle = await sourceLink.elementHandle();
   const licenseKeyHandle = await licenseKeyLink.elementHandle();
-  const shareParent = await page.evaluate(
-    ([a, b]) => a?.parentElement === b?.parentElement,
+  const nextToTheButton = await page.evaluate(
+    ([link, button]) => {
+      const siblings = Array.from(button?.parentElement?.children ?? []).filter(
+        (el) => el.tagName !== "SCRIPT",
+      );
+      const afterButton = siblings[siblings.indexOf(button!) + 1];
+      return !!afterButton?.contains(link ?? null);
+    },
     [sourceHandle, licenseKeyHandle],
   );
-  expect(shareParent).toBe(true);
+  expect(nextToTheButton).toBe(true);
 });
 
 test("The source opens without signing in", async ({ page, context }) => {
