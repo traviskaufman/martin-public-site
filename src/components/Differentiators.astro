@@ -1,0 +1,32 @@
+---
+import { differentiators } from "../differentiators";
+---
+
+<section aria-labelledby="differentiators">
+  <h2 id="differentiators">What I do that vanilla Claude Code doesn't</h2>
+  <ol>
+    {differentiators.map(({ title, sentence }) => (
+      <li>
+        <strong>{title}</strong> {sentence}
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  ol {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+    padding-inline-start: 1.5rem;
+  }
+
+  strong {
+    color: var(--color-text);
+  }
+
+  li {
+    color: var(--color-text-muted);
+  }
+</style>

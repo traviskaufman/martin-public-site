@@ -4,6 +4,7 @@ import Pitch from "../layouts/Pitch.astro";
 import LicenseKeyButton from "../components/LicenseKeyButton.astro";
 import SourceLink from "../components/SourceLink.astro";
 import Comparison from "../components/Comparison.astro";
+import Differentiators from "../components/Differentiators.astro";
 import { headline, pitch } from "../pitch";
 import { comparisonHeadings } from "../comparisons";
 
@@ -21,6 +22,7 @@ const comparisonsByHeading = new Map(
     <LicenseKeyButton />
     <SourceLink />
   </p>
+  <Differentiators />
   {comparisonHeadings.map((heading) => {
     const data = comparisonsByHeading.get(heading);
     if (data) {
@@ -30,6 +32,7 @@ const comparisonsByHeading = new Map(
           prompt={data.prompt}
           vanilla={data.vanilla}
           martin={data.martin}
+          differentiator={data.differentiator}
         />
       );
     }

@@ -1,9 +1,10 @@
 ---
-const { heading, prompt, vanilla, martin } = Astro.props;
+const { heading, prompt, vanilla, martin, differentiator } = Astro.props;
 const headingId = `comparison-${heading.toLowerCase().replace(/\s+/g, "-")}`;
 ---
 
 <section aria-labelledby={headingId}>
+  <p class="differentiator">{differentiator}</p>
   <h2 id={headingId}>{heading}</h2>
   <blockquote>{prompt}</blockquote>
   <div class="columns">
@@ -40,6 +41,15 @@ const headingId = `comparison-${heading.toLowerCase().replace(/\s+/g, "-")}`;
     padding-inline-start: 1rem;
     border-inline-start: 3px solid var(--color-border);
     color: var(--color-text-muted);
+  }
+
+  .differentiator {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 
   .columns {
