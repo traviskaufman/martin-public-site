@@ -1,0 +1,30 @@
+order: 1
+heading: Clarifying questions
+differentiator: I clarify by default
+prompt: |
+  Build me a personal CRM.
+vanilla: |
+  I built a personal CRM that runs on your own computer. It needs nothing but Python: no packages to install and no build step. All your data is kept in one SQLite file, `crm.db`.
+
+  **To run it:** `python3 server.py`, then open http://127.0.0.1:8765
+
+  **What it does:**
+  - **Dashboard:** shows who you're overdue to contact, reminders due this week, birthdays in the next 30 days (with the age they're turning, if you entered the year) and your recent activity. A **✓ Contacted** button marks that you got in touch today.
+  - **Contacts:** stores contact details, how you met, notes, tags and how often you want to stay in touch (weekly, monthly, quarterly and so on).
+  - **Contact page:** a history of calls, meetings and messages, plus dated reminders like "ask how the move went."
+  - **Finding people:** search across names, companies, notes and tags; click a tag to filter; sort by name, most overdue, longest since you last talked, or recently added. Press `/` to search and `n` to add a contact.
+  - **Import and export:** bring contacts in from a CSV file, and export everything as CSV or JSON.
+  - It follows your system's light or dark mode.
+
+  **Testing:** there are 15 tests covering the data rules and the web requests, and all of them pass. They include overdue follow-ups, Feb 29 birthdays, deleting a contact along with their history, CSV import and export, and blocking changes from other websites. I checked the JavaScript for syntax errors but haven't clicked through the pages in a browser.
+
+  The web request tests take about 35 seconds. Using curl, the server itself answered in under a millisecond; the delay comes from this sandbox blocking Python's own connections to the local server, so on your machine they should finish almost instantly.
+
+  **Safety:** there's no login, so by default only your own computer can reach it, and it rejects write requests from other websites. Don't use `--host 0.0.0.0` on a network you don't trust.
+
+  Files are `server.py`, the `static/` folder (the web pages), `test_server.py` and `README.md`. Some things I could add next: a Gmail or Calendar sync to log interactions automatically, a vCard import from your phone's contacts, or a login so you can host it somewhere.
+martin: |
+  Before we talk about what the CRM should do, I'd like to understand what's going wrong today.
+
+  1. What goes wrong right now with keeping up with the people in your life? For example: losing touch, forgetting details, or missing moments that matter.
+  2. Tell me about the most recent time it happened. Who was it, what happened, and how did you find out?

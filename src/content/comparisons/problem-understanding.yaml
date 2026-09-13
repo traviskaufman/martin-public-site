@@ -1,0 +1,45 @@
+order: 2
+heading: Problem understanding
+differentiator: I make minimal assumptions
+prompt: |
+  Build me a personal CRM.
+vanilla: |
+  I built a personal CRM that runs on your own computer. It needs nothing but Python: no packages to install and no build step. All your data is kept in one SQLite file, `crm.db`.
+
+  **To run it:** `python3 server.py`, then open http://127.0.0.1:8765
+
+  **What it does:**
+  - **Dashboard:** shows who you're overdue to contact, reminders due this week, birthdays in the next 30 days (with the age they're turning, if you entered the year) and your recent activity. A **✓ Contacted** button marks that you got in touch today.
+  - **Contacts:** stores contact details, how you met, notes, tags and how often you want to stay in touch (weekly, monthly, quarterly and so on).
+  - **Contact page:** a history of calls, meetings and messages, plus dated reminders like "ask how the move went."
+  - **Finding people:** search across names, companies, notes and tags; click a tag to filter; sort by name, most overdue, longest since you last talked, or recently added. Press `/` to search and `n` to add a contact.
+  - **Import and export:** bring contacts in from a CSV file, and export everything as CSV or JSON.
+  - It follows your system's light or dark mode.
+martin: |
+  Martin:
+  Before we talk about what the CRM should do, I'd like to understand what's going wrong today.
+
+  1. What goes wrong right now with keeping up with the people in your life? For example: losing touch, forgetting details, or missing moments that matter.
+  2. Tell me about the most recent time it happened. Who was it, what happened, and how did you find out?
+
+  You:
+  Mostly losing touch with people I meant to stay close to, and forgetting what we last talked about. Most recent: last month I ran into Dana at a conference. She was a client two years ago and in the spring she mentioned a new project she wanted help with. I never followed up, and when we talked she said she had hired someone else in July. I found out because she told me to my face. Right now everything lives in my head, in iMessage threads, and in a Google Sheet I stopped updating a year ago. Something like this happens about once a month.
+
+  Martin:
+  Thanks, the Dana story helps a lot. Two follow-ups:
+
+  1. Back in the spring, how did Dana tell you about the project: in person, over iMessage, or some other way? And what got in the way of following up? Did you mean to do it later and it slipped, or did you forget she'd mentioned it at all?
+  2. The Dana story is about a lost client. You also said you lose touch with people you meant to stay close to, and forget what you last talked about. Can you tell me about a recent time that happened with someone who isn't a client, like a friend or an old colleague? Who was it, and what happened?
+
+  You:
+  Dana told me in person at a coffee in April. I meant to send her a proposal the following week and it slipped; by June I had forgotten she mentioned it at all. Non-client example: my old teammate Marcus moved to Denver in 2024. We said we would do a monthly call. I realized in August that we had not spoken since February, and when I texted him I could not remember whether his daughter had been born yet, so I avoided asking. That is the other half of it: I do not remember what we last talked about, so I put off reaching out.
+
+  Martin:
+  Here's what I understand so far.
+
+  You meant to stay close to certain people, both clients and friends, and two things keep going wrong. You lose track of promises and plans to follow up, and you forget what you last talked about, which makes you put off reaching out. Right now all of this lives in your head, in iMessage threads, and in a Google Sheet you stopped updating a year ago. Something like this happens about once a month.
+
+  - **Dana:** She was a client two years ago. Over coffee in April she told you about a new project she wanted help with. You meant to send her a proposal the next week, but it slipped, and by June you'd forgotten she'd mentioned it. Last month you ran into her at a conference, and she told you she'd hired someone else in July.
+  - **Marcus:** He was your teammate and moved to Denver in 2024. You agreed to a monthly call. In August you realized you hadn't spoken since February. When you texted him, you couldn't remember whether his daughter had been born yet, so you didn't ask.
+
+  Is that right? Is anything missing or off?

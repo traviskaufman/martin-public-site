@@ -1,11 +1,50 @@
 ---
+import { getCollection } from "astro:content";
 import Pitch from "../layouts/Pitch.astro";
 import LicenseKeyButton from "../components/LicenseKeyButton.astro";
+import Comparison from "../components/Comparison.astro";
 import { headline, pitch } from "../pitch";
+import { comparisonHeadings } from "../comparisons";
+
+const comparisonsByHeading = new Map(
+  (await getCollection("comparisons"))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((entry) => [entry.data.heading, entry.data]),
+);
 ---
 
 <Pitch>
   <h1>{headline}</h1>
   <p>{pitch}</p>
   <LicenseKeyButton />
+  {comparisonHeadings.map((heading) => {
+    const data = comparisonsByHeading.get(heading);
+    if (data) {
+      return (
+        <Comparison
+          heading={data.heading}
+          prompt={data.prompt}
+          vanilla={data.vanilla}
+          martin={data.martin}
+        />
+      );
+    }
+    return (
+      import.meta.env.DEV && (
+        <section class="comparison-placeholder">
+          <h2>{heading}</h2>
+          <p>I haven't run this one yet — check back soon.</p>
+        </section>
+      )
+    );
+  })}
 </Pitch>
+
+<style>
+  .comparison-placeholder {
+    padding: 1rem;
+    border: 1px dashed var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-text-muted);
+  }
+</style>

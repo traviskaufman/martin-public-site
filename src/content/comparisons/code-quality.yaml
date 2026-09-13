@@ -1,0 +1,109 @@
+order: 3
+heading: Code quality
+differentiator: Zero slop
+prompt: |
+  Build me a personal CRM.
+vanilla: |
+  server.py (716 lines), lines 36–73:
+
+  SCHEMA = """
+  CREATE TABLE IF NOT EXISTS contacts (
+      id             INTEGER PRIMARY KEY,
+      name           TEXT NOT NULL,
+      email          TEXT NOT NULL DEFAULT '',
+      phone          TEXT NOT NULL DEFAULT '',
+      company        TEXT NOT NULL DEFAULT '',
+      role           TEXT NOT NULL DEFAULT '',
+      location       TEXT NOT NULL DEFAULT '',
+      birthday       TEXT NOT NULL DEFAULT '',   -- YYYY-MM-DD or --MM-DD (year unknown)
+      how_met        TEXT NOT NULL DEFAULT '',
+      notes          TEXT NOT NULL DEFAULT '',
+      follow_up_days INTEGER,                    -- desired contact cadence; NULL = none
+      created_at     TEXT NOT NULL,
+      updated_at     TEXT NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS contact_tags (
+      contact_id INTEGER NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
+      tag        TEXT NOT NULL,
+      PRIMARY KEY (contact_id, tag)
+  );
+  CREATE TABLE IF NOT EXISTS interactions (
+      id         INTEGER PRIMARY KEY,
+      contact_id INTEGER NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
+      date       TEXT NOT NULL,
+      kind       TEXT NOT NULL,
+      summary    TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS reminders (
+      id         INTEGER PRIMARY KEY,
+      contact_id INTEGER NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
+      due_date   TEXT NOT NULL,
+      text       TEXT NOT NULL,
+      done       INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL
+  );
+  CREATE INDEX IF NOT EXISTS idx_interactions_contact ON interactions(contact_id, date);
+martin: |
+  src/personal_crm/people.py (154 lines), lines 31–90:
+
+  @dataclass(frozen=True)
+  class Every:
+      count: int
+      unit: Literal["day", "week", "month"]
+
+      def after(self, start: date) -> date:
+          match self.unit:
+              case "day":
+                  return start + timedelta(days=self.count)
+              case "week":
+                  return start + timedelta(weeks=self.count)
+              case "month":
+                  months_since_year_zero = start.year * 12 + start.month - 1 + self.count
+                  year, month_index = divmod(months_since_year_zero, 12)
+                  last_day = calendar.monthrange(year, month_index + 1)[1]
+                  return start.replace(year=year, month=month_index + 1, day=min(start.day, last_day))
+
+      def __str__(self) -> str:
+          return self.unit if self.count == 1 else f"{self.count} {self.unit}s"
+
+
+  @dataclass(frozen=True)
+  class Conversation:
+      on: date
+      note: str
+
+
+  @dataclass
+  class FollowUp:
+      number: int
+      due: date
+      note: str
+      done_on: date | None = None
+
+      @property
+      def is_open(self) -> bool:
+          return self.done_on is None
+
+
+  @dataclass
+  class Person:
+      name: str
+      conversations: list[Conversation] = field(default_factory=list)
+      follow_ups: list[FollowUp] = field(default_factory=list)
+      every: Every | None = None
+      every_set_on: date | None = None
+
+      @property
+      def next_due(self) -> date | None:
+          if self.every is None or self.every_set_on is None:
+              return None
+          last = self.last_conversation
+          return self.every.after(last.on if last else self.every_set_on)
+
+      def talk_every(self, every: Every, today: date) -> None:
+          self.every = every
+          self.every_set_on = today
+
+      @property
+      def conversations_newest_first(self) -> list[Conversation]:

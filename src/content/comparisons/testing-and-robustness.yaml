@@ -1,0 +1,100 @@
+order: 4
+heading: Testing and robustness
+differentiator: Zero slop
+prompt: |
+  Build me a personal CRM.
+vanilla: |
+  test_server.py, lines 15–45 (15 tests; they import server.py and call its Store class directly):
+
+
+  class StoreTests(unittest.TestCase):
+      def setUp(self):
+          self.tmp = tempfile.TemporaryDirectory()
+          self.store = server.Store(str(Path(self.tmp.name) / "t.db"))
+
+      def tearDown(self):
+          self.tmp.cleanup()
+
+      def test_create_and_tags_normalized(self):
+          c = self.store.create_contact({"name": " Ada ", "tags": "Work, friend, work"})
+          self.assertEqual(c["name"], "Ada")
+          self.assertEqual(c["tags"], ["friend", "work"])
+
+      def test_name_required(self):
+          with self.assertRaises(server.ApiError):
+              self.store.create_contact({"name": "  "})
+
+      def test_follow_up_overdue_uses_last_interaction(self):
+          c = self.store.create_contact({"name": "Bo", "follow_up_days": 30})
+          self.store.add_interaction(c["id"], {"date": (date.today() - timedelta(days=40)).isoformat(), "kind": "call"})
+          c = self.store.get_contact(c["id"])
+          self.assertEqual(c["days_overdue"], 10)
+          dash = self.store.dashboard()
+          self.assertEqual([x["id"] for x in dash["overdue"]], [c["id"]])
+
+          self.store.add_interaction(c["id"], {"date": date.today().isoformat(), "kind": "email"})
+          self.assertEqual(self.store.get_contact(c["id"])["days_overdue"], -30)
+          self.assertEqual(self.store.dashboard()["overdue"], [])
+
+      def test_birthdays(self):
+martin: |
+  tests/e2e/conftest.py (every test runs the real `crm` command as a subprocess):
+
+  @pytest.fixture
+  def crm_file(tmp_path):
+      return tmp_path / "personal-crm.json"
+
+
+  @pytest.fixture
+  def crm(crm_file):
+      def run(*args: str, today: str = "2026-09-12") -> subprocess.CompletedProcess[str]:
+          environment = os.environ | {"CRM_FILE": str(crm_file), "CRM_TODAY": today}
+          return subprocess.run(
+              ["uv", "run", "crm", *args], capture_output=True, text=True, env=environment
+          )
+
+      return run
+
+  tests/e2e/test_follow_ups.py:
+
+  @pytest.fixture
+  def follow_up_for_dana(crm):
+      crm("add", "Dana", today="2026-04-14")
+      crm(
+          "follow-up",
+          "Dana",
+          "2026-04-21",
+          "--note",
+          "Send proposal for her new project",
+          today="2026-04-14",
+      )
+
+
+  def test_the_follow_up_reminds_me_on_its_due_date(crm, follow_up_for_dana):
+      reminders = crm(today="2026-04-21")
+
+      assert (
+          "  #1 Dana — Send proposal for her new project (due today)" in reminders.stdout.splitlines()
+      )
+
+
+  def test_no_reminder_before_the_due_date(crm, follow_up_for_dana):
+      reminders = crm(today="2026-04-20")
+
+      assert reminders.stdout == "Nothing due today.\n"
+
+
+  def test_an_unfinished_follow_up_stays_in_front_of_me(crm, follow_up_for_dana):
+      follow_ups = crm("follow-ups", today="2026-06-01")
+
+      assert follow_ups.stdout == (
+          "#1  Dana  overdue since 2026-04-21  Send proposal for her new project\n"
+      )
+
+
+  def test_a_finished_follow_up_goes_away(crm, follow_up_for_dana):
+      done = crm("done", "1", today="2026-04-21")
+      follow_ups = crm("follow-ups", today="2026-04-21")
+
+      assert done.stdout == "Marked follow-up #1 for Dana done.\n"
+      assert follow_ups.stdout == "Nothing to follow up on\n"
