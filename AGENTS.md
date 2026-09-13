@@ -18,7 +18,10 @@ npm run build
 
 ## Layout
 
-- `src/pages/index.astro` — the only page.
+- `src/pages/index.astro` — the only page; `src/layouts/Pitch.astro` is its shell (head, meta tags, analytics, footer).
+- `src/components/` — one `.astro` file per section, in page order: `LicenseKeyButton`, `SourceLink`, `Differentiators`, `Comparison`, `WhyTravisBuiltMe`, `AfterYouPay`, `Faq`, `Footer`; `VisitCounter` is the analytics snippet.
+- `src/pitch.ts`, `src/differentiators.ts`, `src/faq.ts`, `src/links.ts` — copy and URLs as constants; `src/content/comparisons/*.yaml` — the transcripts (never reworded).
+- `.github/workflows/deploy.yml` — every push to `main` runs the checks and tests, builds, and deploys `dist/` to Cloudflare Pages.
 - `tests/*.spec.ts` — Playwright end-to-end tests; every test opens the site in a browser and asserts what a visitor sees.
 - `.martin/` — Martin's build ledger. Only `.martin/README.md` is tracked.
 
@@ -28,7 +31,8 @@ npm run build
 - Every story ships with one Playwright test in `tests/` written before its code.
 - The pre-commit hook (`.husky/pre-commit`) runs Prettier and ESLint on staged files; a failing hook is fixed, never skipped with `--no-verify`.
 - No code comments.
-- Site copy is written in Martin's first person, speaking to the reader as "you".
+- Site copy is written in Martin's first person, speaking to the reader as "you". Quoted strings in a story's Gherkin appear on the page verbatim.
+- WARNING: `npm test` reaches buy.stripe.com and github.com live; without network access those tests fail, not the site.
 
 ## Preview image
 

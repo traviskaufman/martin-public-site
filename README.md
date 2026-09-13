@@ -35,4 +35,12 @@ npm run format:check
 
 ## Deploy
 
-Cloudflare Pages builds `main` with `npm run build` and serves `dist/`.
+Every push to `main` runs `.github/workflows/deploy.yml`: lint, format check, tests, build, then `wrangler pages deploy dist` to the Cloudflare Pages project `trymartin-dev`. The workflow reads `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` from the repository's Actions secrets.
+
+## Content
+
+- `src/pitch.ts` — the headline and the pitch paragraph.
+- `src/differentiators.ts`, `src/faq.ts` — the differentiators and the FAQ.
+- `src/content/comparisons/*.yaml` — verbatim transcripts from real sessions, one per comparison.
+- `src/links.ts` — the checkout and repository URLs.
+- `public/og.png` — the link-preview image; `AGENTS.md` has the command that regenerates it.
