@@ -9,7 +9,7 @@ test("Martin pitches itself in the first person", async ({ page }) => {
 
   const paragraph = page.locator("h1 + p");
   await expect(paragraph).toContainText("production codebase in one shot");
-  await expect(paragraph).toContainText(/^I'm a Claude Code plugin/);
+  await expect(paragraph).toContainText(/^I’m a Claude Code plugin/);
 });
 
 test("The price is on the button", async ({ page }) => {

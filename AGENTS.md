@@ -67,14 +67,16 @@ const html = `<!doctype html>
       }
       .logo { width: 96px; height: 96px; margin: 0 0 32px; }
       h1 { font-size: 64px; font-weight: 700; line-height: 1.1; text-wrap: balance; margin: 0 0 24px; }
-      p { font-size: 30px; color: #5c5c5c; line-height: 1.4; margin: 0; }
-      .mark { position: absolute; left: 80px; bottom: 64px; font-size: 24px; font-weight: 600; color: #6d28d9; }
+      p { font-size: 30px; color: #5c5c5c; line-height: 1.4; margin: 0 0 40px; }
+      .cta { align-self: flex-start; padding: 18px 36px; border-radius: 12px; background: #6d28d9; color: #ffffff; font-size: 28px; font-weight: 600; }
+      .mark { position: absolute; right: 80px; bottom: 64px; font-size: 24px; font-weight: 600; color: #6d28d9; }
     </style>
   </head>
   <body>
     <div class="logo">${logo}</div>
     <h1>${headline}</h1>
     <p>${firstSentence}</p>
+    <span class="cta">Get your license key for $5</span>
     <span class="mark">trymartin.dev</span>
   </body>
 </html>`;
