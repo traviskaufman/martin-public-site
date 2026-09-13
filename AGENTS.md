@@ -29,3 +29,55 @@ npm run build
 - The pre-commit hook (`.husky/pre-commit`) runs Prettier and ESLint on staged files; a failing hook is fixed, never skipped with `--no-verify`.
 - No code comments.
 - Site copy is written in Martin's first person, speaking to the reader as "you".
+
+## Preview image
+
+`public/og.png` is rendered once and committed; regenerate it with the following command.
+
+```sh
+node --input-type=module <<'EOF'
+import { chromium } from "playwright";
+import { headline, pitch } from "./src/pitch.ts";
+
+const firstSentence = pitch.slice(0, pitch.indexOf(".") + 1);
+
+const html = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html, body { margin: 0; padding: 0; }
+      body {
+        width: 1200px;
+        height: 630px;
+        background: #ffffff;
+        color: #1a1a1a;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 80px;
+        box-sizing: border-box;
+      }
+      h1 { font-size: 64px; font-weight: 700; line-height: 1.1; text-wrap: balance; margin: 0 0 24px; }
+      p { font-size: 30px; color: #5c5c5c; line-height: 1.4; margin: 0; }
+      .mark { position: absolute; left: 80px; bottom: 64px; font-size: 24px; font-weight: 600; color: #6d28d9; }
+    </style>
+  </head>
+  <body>
+    <h1>${headline}</h1>
+    <p>${firstSentence}</p>
+    <span class="mark">trymartin.dev</span>
+  </body>
+</html>`;
+
+const browser = await chromium.launch();
+const page = await browser.newPage({
+  viewport: { width: 1200, height: 630 },
+  deviceScaleFactor: 1,
+});
+await page.setContent(html);
+await page.screenshot({ path: "public/og.png", type: "png" });
+await browser.close();
+EOF
+```
