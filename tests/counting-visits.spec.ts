@@ -90,10 +90,12 @@ test("Clicking the purchase button counts one event", async ({ page }) => {
 
   await page.goto("/");
 
-  const button = page.getByRole("link", {
-    name: "Get your license key for $5",
-    exact: true,
-  });
+  const button = page
+    .getByRole("link", {
+      name: "Get your license key for $5",
+      exact: true,
+    })
+    .first();
 
   const handOffState = await button.evaluate((el: HTMLElement) => {
     el.click();

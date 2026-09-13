@@ -6,3 +6,4 @@ Tests live in `tests/*.spec.ts` and run with `npm test`.
 - One spec per user story, named after the story, written and seen failing before the story's code.
 - Assert what a visitor sees: text, roles, labels, and navigation. Do not assert on CSS classes or markup structure beyond what the story names.
 - A test that involves analytics intercepts `https://us.i.posthog.com/**` and applies the bot-detection spoof from `tests/counting-visits.spec.ts`; PostHog's SDK drops every event from an unspoofed headless browser.
+- The "Get your license key for $5" button appears twice (the opening and "What happens after you pay"); a test about the opening button uses `.first()` on the role lookup, and a test about the second scopes the lookup to that section.

@@ -16,10 +16,12 @@ test("The price is on the button", async ({ page }) => {
   await page.goto("/");
 
   await expect(
-    page.getByRole("link", {
-      name: "Get your license key for $5",
-      exact: true,
-    }),
+    page
+      .getByRole("link", {
+        name: "Get your license key for $5",
+        exact: true,
+      })
+      .first(),
   ).toBeVisible();
 });
 
@@ -28,6 +30,7 @@ test("The button takes me to checkout", async ({ page }) => {
 
   await page
     .getByRole("link", { name: "Get your license key for $5", exact: true })
+    .first()
     .click();
   await page.waitForURL(/buy\.stripe\.com/);
 

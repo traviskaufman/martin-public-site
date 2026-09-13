@@ -14,10 +14,12 @@ test("The site says who built it", async ({ page }) => {
   await expect(sourceLink).toBeVisible();
   await expect(sourceLink).toHaveAttribute("href", REPO_URL);
 
-  const licenseKeyLink = page.getByRole("link", {
-    name: "Get your license key for $5",
-    exact: true,
-  });
+  const licenseKeyLink = page
+    .getByRole("link", {
+      name: "Get your license key for $5",
+      exact: true,
+    })
+    .first();
 
   const sourceHandle = await sourceLink.elementHandle();
   const licenseKeyHandle = await licenseKeyLink.elementHandle();
