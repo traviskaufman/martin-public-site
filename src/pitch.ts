@@ -6,3 +6,6 @@ export const pitch =
 
 export const previewDescription =
   "Turns Claude Code into an expert software engineer";
+
+export const searchDescription =
+  "Martin turns Claude Code into an expert software engineer: describe an idea and get a production codebase in one shot. Get your license key for $5.";
