@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { headline, pitch } from "../pitch";
+import { headline, pitch, previewDescription } from "../pitch";
 import VisitCounter from "../components/VisitCounter.astro";
 import Footer from "../components/Footer.astro";
 ---
@@ -13,8 +13,9 @@ import Footer from "../components/Footer.astro";
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={pitch} />
+    <meta property="og:site_name" content="Martin" />
     <meta property="og:title" content={headline} />
-    <meta property="og:description" content={pitch} />
+    <meta property="og:description" content={previewDescription} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={new URL("/", Astro.site).toString()} />
     <meta
@@ -25,7 +26,7 @@ import Footer from "../components/Footer.astro";
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={headline} />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>Martin — {headline}</title>
+    <title>{headline}</title>
     <VisitCounter />
   </head>
   <body>

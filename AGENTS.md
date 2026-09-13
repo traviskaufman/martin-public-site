@@ -40,10 +40,12 @@ npm run build
 
 ```sh
 node --input-type=module <<'EOF'
+import { readFileSync } from "node:fs";
 import { chromium } from "playwright";
 import { headline, pitch } from "./src/pitch.ts";
 
 const firstSentence = pitch.slice(0, pitch.indexOf(".") + 1);
+const logo = readFileSync("public/favicon.svg", "utf8");
 
 const html = `<!doctype html>
 <html lang="en">
@@ -63,12 +65,14 @@ const html = `<!doctype html>
         padding: 80px;
         box-sizing: border-box;
       }
+      .logo { width: 96px; height: 96px; margin: 0 0 32px; }
       h1 { font-size: 64px; font-weight: 700; line-height: 1.1; text-wrap: balance; margin: 0 0 24px; }
       p { font-size: 30px; color: #5c5c5c; line-height: 1.4; margin: 0; }
       .mark { position: absolute; left: 80px; bottom: 64px; font-size: 24px; font-weight: 600; color: #6d28d9; }
     </style>
   </head>
   <body>
+    <div class="logo">${logo}</div>
     <h1>${headline}</h1>
     <p>${firstSentence}</p>
     <span class="mark">trymartin.dev</span>

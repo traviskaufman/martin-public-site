@@ -8,11 +8,6 @@ const OG_TAGS: { property: string; content: string }[] = [
     content: "Turn your coding agent into a Software Engineering agent",
   },
   {
-    property: "og:description",
-    content:
-      "I'm a Claude Code plugin that gives your agentic workflows software engineering expertise. Ask me for an idea and get a fully working production codebase in one shot.",
-  },
-  {
     property: "og:image",
     content: `${SITE_URL}/og.png`,
   },
