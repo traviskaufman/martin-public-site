@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { headline, pitch } from "../pitch";
+import VisitCounter from "../components/VisitCounter.astro";
 ---
 
 <html lang="en">
@@ -12,6 +13,7 @@ import { headline, pitch } from "../pitch";
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={pitch} />
     <title>Martin — {headline}</title>
+    <VisitCounter />
   </head>
   <body>
     <main>

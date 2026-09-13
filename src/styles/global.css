@@ -84,3 +84,7 @@ h1 + p {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
+
+.license-key-button[aria-disabled="true"] {
+  opacity: 0.6;
+}

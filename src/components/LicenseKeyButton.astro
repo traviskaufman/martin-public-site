@@ -5,3 +5,17 @@ import { checkoutUrl } from "../links";
 <a href={checkoutUrl} class="license-key-button">
   Get your license key for $5
 </a>
+
+<script>
+  const button = document.querySelector(".license-key-button");
+
+  button?.addEventListener("click", (event) => {
+    if (button.getAttribute("aria-disabled") === "true") {
+      event.preventDefault();
+      return;
+    }
+    window.posthog?.capture("get_license_key", {}, { send_instantly: true });
+    button.textContent = "Opening checkout…";
+    button.setAttribute("aria-disabled", "true");
+  });
+</script>
