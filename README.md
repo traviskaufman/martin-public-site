@@ -42,5 +42,7 @@ Every push to `main` runs `.github/workflows/deploy.yml`: lint, format check, te
 - `src/pitch.ts` — the headline and the pitch paragraph.
 - `src/differentiators.ts`, `src/faq.ts` — the differentiators and the FAQ.
 - `src/content/comparisons/*.yaml` — verbatim transcripts from real sessions, one per comparison.
+- `src/content/scenes/*.yaml` — what the terminal plays under each section; a scene either carries its own verbatim transcript or reuses a comparison's Martin half.
 - `src/links.ts` — the checkout and repository URLs.
+- `public/fonts/` — Geist and Geist Mono, self-hosted.
 - `public/og.png` — the link-preview image; `AGENTS.md` has the command that regenerates it.
