@@ -1,0 +1,100 @@
+<button type="button" class="theme-toggle" aria-label="Switch to dark mode">
+  <svg class="moon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+    <path
+      d="M15.75 9.5925C15.632 10.8692 15.1529 12.0858 14.3687 13.1001C13.5845 14.1144 12.5276 14.8843 11.3218 15.3199C10.1159 15.7555 8.81099 15.8386 7.55963 15.5596C6.30826 15.2805 5.16225 14.6509 4.25567 13.7443C3.34909 12.8378 2.71945 11.6917 2.44043 10.4404C2.16141 9.18901 2.24454 7.88406 2.68009 6.67822C3.11565 5.47238 3.88562 4.41552 4.89991 3.63131C5.9142 2.8471 7.13085 2.36798 8.4075 2.25C7.66006 3.2612 7.30039 4.50709 7.3939 5.76106C7.48741 7.01503 8.0279 8.19379 8.91705 9.08295C9.80621 9.9721 10.985 10.5126 12.2389 10.6061C13.4929 10.6996 14.7388 10.3399 15.75 9.5925Z"
+      stroke="currentColor"
+      stroke-width="1.35"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    ></path>
+  </svg>
+  <svg class="sun" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+    <path
+      d="M9 12C10.6569 12 12 10.6569 12 9C12 7.34315 10.6569 6 9 6C7.34315 6 6 7.34315 6 9C6 10.6569 7.34315 12 9 12Z"
+      stroke="currentColor"
+      stroke-width="1.35"
+      stroke-linecap="round"
+    ></path>
+    <path
+      d="M9 1.5V3M9 15V16.5M3.6975 3.6975L4.755 4.755M13.245 13.245L14.3025 14.3025M1.5 9H3M15 9H16.5M3.6975 14.3025L4.755 13.245M13.245 4.755L14.3025 3.6975"
+      stroke="currentColor"
+      stroke-width="1.35"
+      stroke-linecap="round"
+    ></path>
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-heading);
+    cursor: pointer;
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--color-heading);
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .sun,
+  :global(html[data-theme="dark"]) .moon {
+    display: none;
+  }
+
+  :global(html[data-theme="dark"]) .sun {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(html:not([data-theme="light"])) .moon {
+      display: none;
+    }
+
+    :global(html:not([data-theme="light"])) .sun {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+  const systemPrefersDark = matchMedia("(prefers-color-scheme: dark)");
+
+  function effectiveTheme() {
+    return root.dataset.theme ?? (systemPrefersDark.matches ? "dark" : "light");
+  }
+
+  function labelToggles() {
+    const next = effectiveTheme() === "dark" ? "light" : "dark";
+    document.querySelectorAll(".theme-toggle").forEach((toggle) => {
+      toggle.setAttribute("aria-label", `Switch to ${next} mode`);
+    });
+  }
+
+  document.querySelectorAll(".theme-toggle").forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+      const theme = effectiveTheme() === "dark" ? "light" : "dark";
+      root.dataset.theme = theme;
+      labelToggles();
+      try {
+        localStorage.setItem("theme", theme);
+      } catch {}
+    });
+  });
+
+  systemPrefersDark.addEventListener("change", labelToggles);
+  labelToggles();
+</script>

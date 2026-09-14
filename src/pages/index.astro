@@ -6,6 +6,7 @@ import SourceLink from "../components/SourceLink.astro";
 import ComparisonVanilla from "../components/ComparisonVanilla.astro";
 import Terminal from "../components/Terminal.astro";
 import TerminalSheet from "../components/TerminalSheet.astro";
+import ClosingPrompt from "../components/ClosingPrompt.astro";
 import Differentiators from "../components/Differentiators.astro";
 import WhyTravisBuiltMe from "../components/WhyTravisBuiltMe.astro";
 import AfterYouPay from "../components/AfterYouPay.astro";
@@ -65,6 +66,7 @@ const scenes = await loadScenes();
       <Terminal scenes={scenes} />
     </TerminalSheet>
   </div>
+  <ClosingPrompt />
 </Pitch>
 
 <style>

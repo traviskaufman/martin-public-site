@@ -1,0 +1,66 @@
+---
+import "../styles/terminal.css";
+import LicenseKeyButton from "./LicenseKeyButton.astro";
+---
+
+<section class="closing" aria-label="Ready to build?">
+  <div class="terminal docked" data-state="finished">
+    <div class="chrome">
+      <span class="lights" aria-hidden="true">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+      <span class="terminal-title">claude --agent martin</span>
+      <span class="controls">
+        <span class="speed">2×</span>
+      </span>
+    </div>
+    <div class="pane">
+      <p class="command">
+        <span class="prompt">&gt;</span>{" "}
+        <span class="command-text">ready to build?</span>
+      </p>
+    </div>
+  </div>
+  <LicenseKeyButton />
+</section>
+
+<style>
+  .closing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    max-width: 78.75rem;
+    margin: 8rem auto 0;
+    padding-inline: 5.625rem;
+  }
+
+  .docked {
+    width: 100%;
+    height: 10.5rem;
+  }
+
+  @media (max-width: 1199px) {
+    .closing {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .closing {
+      margin-top: 6rem;
+      padding-inline: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  const closing = document.querySelector(".closing");
+  const sheet = document.querySelector(".terminal-sheet");
+
+  new IntersectionObserver(([entry]) => {
+    sheet.toggleAttribute("data-docked", entry.isIntersecting);
+  }).observe(closing);
+</script>

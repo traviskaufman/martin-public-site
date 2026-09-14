@@ -1,0 +1,100 @@
+---
+import SourceLink from "./SourceLink.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import LicenseKeyButton from "./LicenseKeyButton.astro";
+---
+
+<header class="top-bar" data-showing="false">
+  <p class="wordmark">
+    <span class="tilde">~</span> martin
+  </p>
+  <div class="actions">
+    <span class="source">
+      <SourceLink />
+    </span>
+    <ThemeToggle />
+    <LicenseKeyButton />
+  </div>
+</header>
+
+<style>
+  .top-bar {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 4rem;
+    padding: 0 4.5rem;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-background);
+    transform: translateY(-100%);
+    visibility: hidden;
+    transition:
+      transform 200ms ease-out,
+      visibility 0s 200ms;
+  }
+
+  .top-bar[data-showing="true"] {
+    transform: translateY(0);
+    visibility: visible;
+    transition:
+      transform 200ms ease-out,
+      visibility 0s;
+  }
+
+  .wordmark {
+    color: var(--color-heading);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .tilde {
+    color: var(--color-accent-text);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 899px) {
+    .top-bar {
+      padding: 0 1rem;
+    }
+
+    .actions {
+      gap: 0.75rem;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .source {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .top-bar,
+    .top-bar[data-showing="true"] {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const bar = document.querySelector(".top-bar");
+  const heroButton = document.querySelector(".license-key-button");
+
+  new IntersectionObserver(([entry]) => {
+    const scrolledPast =
+      !entry.isIntersecting && entry.boundingClientRect.top < 0;
+    bar.dataset.showing = String(scrolledPast);
+  }).observe(heroButton);
+</script>
