@@ -24,19 +24,19 @@
 }
 
 :root {
-  color-scheme: light;
-  --color-background: #fdf6e3;
-  --color-surface: #eee8d5;
-  --color-border: #eee8d5;
-  --color-heading: #002b36;
-  --color-text: #073642;
-  --color-text-muted: #586e75;
+  color-scheme: dark;
+  --color-background: #002b36;
+  --color-surface: #073642;
+  --color-border: #073642;
+  --color-heading: #eee8d5;
+  --color-text: #93a1a1;
+  --color-text-muted: #839496;
   --color-accent: #2aa198;
-  --color-accent-text: #15736c;
+  --color-accent-text: #2aa198;
   --color-on-accent: #002b36;
-  --color-terminal-bg: #002b36;
-  --color-terminal-chrome: #073642;
-  --color-terminal-border: #073642;
+  --color-terminal-bg: #073642;
+  --color-terminal-chrome: #002b36;
+  --color-terminal-border: #586e75;
   --color-terminal-text: #93a1a1;
   --color-terminal-bright: #eee8d5;
   --color-terminal-dim: #839496;
@@ -54,34 +54,18 @@
     monospace;
 }
 
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --color-background: #002b36;
-  --color-surface: #073642;
-  --color-border: #073642;
-  --color-heading: #eee8d5;
-  --color-text: #93a1a1;
-  --color-text-muted: #839496;
-  --color-accent-text: #2aa198;
-  --color-terminal-bg: #073642;
-  --color-terminal-chrome: #002b36;
-  --color-terminal-border: #586e75;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --color-background: #002b36;
-    --color-surface: #073642;
-    --color-border: #073642;
-    --color-heading: #eee8d5;
-    --color-text: #93a1a1;
-    --color-text-muted: #839496;
-    --color-accent-text: #2aa198;
-    --color-terminal-bg: #073642;
-    --color-terminal-chrome: #002b36;
-    --color-terminal-border: #586e75;
-  }
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-background: #fdf6e3;
+  --color-surface: #eee8d5;
+  --color-border: #eee8d5;
+  --color-heading: #002b36;
+  --color-text: #073642;
+  --color-text-muted: #586e75;
+  --color-accent-text: #15736c;
+  --color-terminal-bg: #002b36;
+  --color-terminal-chrome: #073642;
+  --color-terminal-border: #073642;
 }
 
 *,

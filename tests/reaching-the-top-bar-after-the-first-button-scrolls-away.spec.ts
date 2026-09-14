@@ -48,7 +48,7 @@ test.describe("in a 1440px wide window", () => {
       }),
     ).toBeVisible();
     await expect(
-      bar.getByRole("button", { name: "Switch to dark mode", exact: true }),
+      bar.getByRole("button", { name: "Switch to light mode", exact: true }),
     ).toBeVisible();
   });
 
@@ -96,7 +96,7 @@ test.describe("in a 390px wide window", () => {
       }),
     ).toBeVisible();
     await expect(
-      bar.getByRole("button", { name: "Switch to dark mode", exact: true }),
+      bar.getByRole("button", { name: "Switch to light mode", exact: true }),
     ).toBeVisible();
     await expect(
       bar.getByRole("link", { name: "Read the source", exact: true }),

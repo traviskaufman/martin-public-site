@@ -21,52 +21,49 @@ function pageBackground(page: Page): Promise<string> {
   return page.evaluate(() => getComputedStyle(document.body).backgroundColor);
 }
 
-test("the page follows my system until I choose", async ({ page }) => {
-  await page.emulateMedia({ colorScheme: "dark" });
+test("the page is dark whatever my system prefers", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
   await openWithTheBarShowing(page);
 
   expect(await pageBackground(page)).toBe(dark);
 });
 
-test("switching to dark", async ({ page }) => {
-  await page.emulateMedia({ colorScheme: "light" });
+test("switching to light", async ({ page }) => {
   await openWithTheBarShowing(page);
-  expect(await pageBackground(page)).toBe(light);
-
-  await page
-    .getByRole("button", { name: "Switch to dark mode", exact: true })
-    .click();
-
-  await expect.poll(() => pageBackground(page)).toBe(dark);
-  await expect(
-    page.getByRole("button", { name: "Switch to light mode", exact: true }),
-  ).toBeVisible();
-});
-
-test("my choice survives a reload", async ({ page }) => {
-  await page.emulateMedia({ colorScheme: "light" });
-  await openWithTheBarShowing(page);
-  await page
-    .getByRole("button", { name: "Switch to dark mode", exact: true })
-    .click();
-  await expect.poll(() => pageBackground(page)).toBe(dark);
-
-  await page.reload();
-
   expect(await pageBackground(page)).toBe(dark);
-});
-
-test("switching back", async ({ page }) => {
-  await page.emulateMedia({ colorScheme: "light" });
-  await openWithTheBarShowing(page);
-  await page
-    .getByRole("button", { name: "Switch to dark mode", exact: true })
-    .click();
-  await expect.poll(() => pageBackground(page)).toBe(dark);
 
   await page
     .getByRole("button", { name: "Switch to light mode", exact: true })
     .click();
 
   await expect.poll(() => pageBackground(page)).toBe(light);
+  await expect(
+    page.getByRole("button", { name: "Switch to dark mode", exact: true }),
+  ).toBeVisible();
+});
+
+test("my choice survives a reload", async ({ page }) => {
+  await openWithTheBarShowing(page);
+  await page
+    .getByRole("button", { name: "Switch to light mode", exact: true })
+    .click();
+  await expect.poll(() => pageBackground(page)).toBe(light);
+
+  await page.reload();
+
+  expect(await pageBackground(page)).toBe(light);
+});
+
+test("switching back", async ({ page }) => {
+  await openWithTheBarShowing(page);
+  await page
+    .getByRole("button", { name: "Switch to light mode", exact: true })
+    .click();
+  await expect.poll(() => pageBackground(page)).toBe(light);
+
+  await page
+    .getByRole("button", { name: "Switch to dark mode", exact: true })
+    .click();
+
+  await expect.poll(() => pageBackground(page)).toBe(dark);
 });
