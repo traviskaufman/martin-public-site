@@ -92,15 +92,15 @@
 }
 
 .terminal[data-state="static"] .controls button,
-.terminal .replay,
+.terminal .controls .replay,
 .terminal .play-icon,
-.terminal[data-state="finished"] .playback,
+.terminal[data-state="finished"] .controls .playback,
 .terminal[data-state="loading"] .pause-icon,
 .terminal[data-state="paused"] .pause-icon {
   display: none;
 }
 
-.terminal[data-state="finished"] .replay {
+.terminal[data-state="finished"] .controls .replay {
   display: inline-flex;
 }
 

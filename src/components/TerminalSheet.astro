@@ -80,6 +80,10 @@
       border: none;
       border-radius: 0;
     }
+
+    .terminal-sheet[data-expanded="false"] :global(.pane) {
+      overflow: clip;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

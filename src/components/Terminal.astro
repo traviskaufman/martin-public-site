@@ -78,7 +78,7 @@ const [first] = scenes;
   const stage = new TerminalStage(terminal);
   const follower = new SceneFollower(scenes, (scene) => stage.show(scene));
 
-  const heroIsVisible = new IntersectionObserver((entries, observer) => {
+  const terminalIsVisible = new IntersectionObserver((entries, observer) => {
     if (!entries.some((entry) => entry.isIntersecting)) {
       return;
     }
@@ -87,5 +87,5 @@ const [first] = scenes;
       startPlayback(stage, follower),
     );
   });
-  heroIsVisible.observe(document.getElementById(scenes[0].section));
+  terminalIsVisible.observe(terminal);
 </script>
