@@ -3,19 +3,23 @@ import { getCollection } from "astro:content";
 import Pitch from "../layouts/Pitch.astro";
 import LicenseKeyButton from "../components/LicenseKeyButton.astro";
 import SourceLink from "../components/SourceLink.astro";
-import Comparison from "../components/Comparison.astro";
+import ComparisonVanilla from "../components/ComparisonVanilla.astro";
+import Terminal from "../components/Terminal.astro";
+import TerminalSheet from "../components/TerminalSheet.astro";
 import Differentiators from "../components/Differentiators.astro";
 import WhyTravisBuiltMe from "../components/WhyTravisBuiltMe.astro";
 import AfterYouPay from "../components/AfterYouPay.astro";
 import Faq from "../components/Faq.astro";
 import { headline, pitch } from "../pitch";
 import { comparisonHeadings } from "../comparisons";
+import { loadScenes } from "../scenes";
 
 const comparisonsByHeading = new Map(
   (await getCollection("comparisons"))
     .sort((a, b) => a.data.order - b.data.order)
     .map((entry) => [entry.data.heading, entry.data]),
 );
+const scenes = await loadScenes();
 ---
 
 <Pitch>
@@ -36,11 +40,10 @@ const comparisonsByHeading = new Map(
         const data = comparisonsByHeading.get(heading);
         if (data) {
           return (
-            <Comparison
+            <ComparisonVanilla
               heading={data.heading}
               prompt={data.prompt}
               vanilla={data.vanilla}
-              martin={data.martin}
               differentiator={data.differentiator}
             />
           );
@@ -58,6 +61,9 @@ const comparisonsByHeading = new Map(
       <AfterYouPay />
       <Faq />
     </div>
+    <TerminalSheet>
+      <Terminal scenes={scenes} />
+    </TerminalSheet>
   </div>
 </Pitch>
 

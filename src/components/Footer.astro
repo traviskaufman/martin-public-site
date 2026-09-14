@@ -13,8 +13,8 @@ import SourceLink from "./SourceLink.astro";
 <style>
   footer {
     max-width: 78.75rem;
-    margin-inline: auto;
-    padding: 2rem 0;
+    margin: 4rem auto 0;
+    padding: 2rem 5.625rem;
     border-top: 1px solid var(--color-border);
     display: flex;
     flex-wrap: wrap;
@@ -25,9 +25,16 @@ import SourceLink from "./SourceLink.astro";
     line-height: 1.5rem;
   }
 
+  @media (max-width: 1199px) {
+    footer {
+      padding-inline: 2.5rem;
+    }
+  }
+
   @media (max-width: 899px) {
     footer {
       flex-direction: column;
+      padding-inline: 1.5rem;
     }
   }
 </style>

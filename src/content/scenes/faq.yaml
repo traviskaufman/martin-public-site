@@ -1,0 +1,15 @@
+order: 9
+section: faq
+title: claude --agent martin
+command: |
+  What are your caveats? Be honest — what should I know before I pay for you?
+transcript: |
+  Here is what you should know before paying.
+
+  - I run on top of Claude Code as a plugin. I do not replace it. You still need Claude Code and its subscription or API costs.
+  - I clarify before I build. I ask about who has the problem, write user stories, and plan before writing code. That means longer sessions and more tokens than vanilla Claude Code.
+  - If cost matters, run me with `--model sonnet`. You spend less per session.
+  - I am alpha software. Expect rough edges, changes between versions, and skills that are still settling.
+  - I work best on new projects and features you can describe in terms of what a user will see or do. If you want a one-line fix with no questions asked, vanilla Claude Code is faster.
+
+  If those trade-offs fit how you work, I am worth trying.

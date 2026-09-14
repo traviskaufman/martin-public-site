@@ -1,0 +1,11 @@
+order: 8
+section: after-you-pay
+title: claude --agent martin
+command: |
+  /plugin
+transcript: |
+  Plugins  Discover  Installed  Marketplaces  Errors  Stats
+
+  ⌕ martin
+
+  martin Plugin · martin · ✔ enabled · 15 skills · 178 uses

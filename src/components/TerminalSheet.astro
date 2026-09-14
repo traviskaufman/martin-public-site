@@ -1,0 +1,130 @@
+<aside class="terminal-sheet" aria-label="Terminal" data-expanded="false">
+  <button
+    type="button"
+    class="handle"
+    aria-expanded="false"
+    aria-label="Expand the terminal"
+  >
+    <span></span>
+  </button>
+  <slot />
+</aside>
+
+<style>
+  .terminal-sheet {
+    position: relative;
+  }
+
+  .terminal-sheet[data-docked] {
+    visibility: hidden;
+  }
+
+  .terminal-sheet > :global(.terminal) {
+    position: sticky;
+    top: 5.5rem;
+    height: 35rem;
+    max-height: calc(100vh - 7rem);
+  }
+
+  .handle {
+    display: none;
+  }
+
+  @media (max-width: 899px) {
+    .terminal-sheet {
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      height: 7rem;
+      overflow: hidden;
+      border-top: 1px solid var(--color-terminal-border);
+      border-radius: 1rem 1rem 0 0;
+      background: var(--color-terminal-bg);
+      transition: height 200ms ease-out;
+    }
+
+    .terminal-sheet[data-expanded="true"] {
+      height: max(40vh, 20rem);
+    }
+
+    .handle {
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem 0 0.25rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    .handle span {
+      width: 2.5rem;
+      height: 0.25rem;
+      border-radius: 2px;
+      background: var(--color-terminal-dim);
+    }
+
+    .handle:focus-visible {
+      outline: 2px solid var(--color-terminal-prompt);
+      outline-offset: -2px;
+    }
+
+    .terminal-sheet > :global(.terminal) {
+      position: static;
+      flex: 1;
+      height: auto;
+      min-height: 0;
+      max-height: none;
+      border: none;
+      border-radius: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-sheet {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const DRAG_THRESHOLD_PIXELS = 40;
+
+  const sheet = document.querySelector(".terminal-sheet");
+  const handle = sheet.querySelector(".handle");
+  let dragStartY = 0;
+  let dragged = false;
+
+  function setExpanded(expanded) {
+    sheet.dataset.expanded = String(expanded);
+    handle.setAttribute("aria-expanded", String(expanded));
+    handle.setAttribute(
+      "aria-label",
+      expanded ? "Collapse the terminal" : "Expand the terminal",
+    );
+  }
+
+  handle.addEventListener("pointerdown", (event) => {
+    dragStartY = event.clientY;
+    dragged = false;
+  });
+
+  handle.addEventListener("pointerup", (event) => {
+    const lift = dragStartY - event.clientY;
+    if (Math.abs(lift) < DRAG_THRESHOLD_PIXELS) {
+      return;
+    }
+    dragged = true;
+    setExpanded(lift > 0);
+  });
+
+  handle.addEventListener("click", () => {
+    if (dragged) {
+      dragged = false;
+      return;
+    }
+    setExpanded(sheet.dataset.expanded !== "true");
+  });
+</script>

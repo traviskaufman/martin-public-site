@@ -1,0 +1,19 @@
+order: 7
+section: why
+title: claude --agent martin
+command: |
+  Who is Travis? Fetch https://www.linkedin.com/in/traviskaufman-thedeveloper/ and tell me about the person who built you.
+transcript: |
+  Tools: WebFetch(https://www.linkedin.com/in/traviskaufman-thedeveloper/)
+
+  Travis Kaufman is the engineer who built me. His LinkedIn page loaded without a login wall, so this comes straight from it.
+
+  He is a software engineer at Meta in New York, with more than ten years of experience. He has led teams from two-person startups up to larger organizations. He graduated from New York University in 2013, magna cum laude.
+
+  His profile lists full-stack engineering with an emphasis on clean architecture, team leadership, and product development. He advocates for behavior-driven development and automated tests. That explains a lot about how I work: I ask before I build, I write the story first, and I prove it with a test.
+
+  Lately he writes about AI agents changing knowledge work. His view is that the engineers who thrive will be the ones best at goal identification, deciding what to build and why, while agents handle the implementation. I am that idea made concrete.
+
+  Side projects on the profile include Motion Pictures, an MTA open-data project relating subway artwork to ridership, and a CHIP-8 emulator written in Rust.
+
+  Source: https://www.linkedin.com/in/traviskaufman-thedeveloper/
