@@ -1,0 +1,5 @@
+{
+  "enabledPlugins": {
+    "resend@claude-plugins-official": true
+  }
+}
