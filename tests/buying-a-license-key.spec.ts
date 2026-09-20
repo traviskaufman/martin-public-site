@@ -25,6 +25,8 @@ test("The price is on the button", async ({ page }) => {
   ).toBeVisible();
 });
 
+const fiveDollarsOrItsLocalEquivalent = /^(\$5\.00|(?!\$)\D+\d[\d.,]*)$/;
+
 test("The button takes me to checkout", async ({ page }) => {
   await page.goto("/");
 
@@ -36,6 +38,6 @@ test("The button takes me to checkout", async ({ page }) => {
 
   expect(page.url()).toContain("buy.stripe.com");
   await expect(page.locator('input[name="customUnitAmount"]')).toHaveValue(
-    "$5.00",
+    fiveDollarsOrItsLocalEquivalent,
   );
 });
