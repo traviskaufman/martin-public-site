@@ -263,13 +263,18 @@ test("a browser still gets the page", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("the footer points agents at the instructions", async ({ page }) => {
+test("the footer does not ask whether the visitor is an agent", async ({
+  page,
+}) => {
   await page.goto("/");
 
   const footer = page.getByRole("contentinfo");
   await footer.scrollIntoViewIfNeeded();
 
   await expect(
+    footer.getByRole("link", { name: "View website source code" }),
+  ).toBeVisible();
+  await expect(
     footer.getByRole("link", { name: "Are you an agent? Read llms.txt" }),
-  ).toHaveAttribute("href", "/llms.txt");
+  ).toHaveCount(0);
 });
