@@ -88,7 +88,6 @@ test.describe("in a 390px wide window", () => {
 
     const bar = getBar(page);
     await expect(bar).toBeVisible();
-    await expect(bar).toContainText("martin");
     await expect(
       bar.getByRole("link", {
         name: "Get your license key for $5",
@@ -101,5 +100,34 @@ test.describe("in a 390px wide window", () => {
     await expect(
       bar.getByRole("link", { name: "Read the source", exact: true }),
     ).toHaveCount(0);
+  });
+
+  test("on a phone the bar keeps the tilde and drops the wordmark", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    await scrollHeroButtonAboveTheWindow(page);
+
+    const bar = getBar(page);
+    await expect(bar).toBeVisible();
+    await expect(bar.getByRole("paragraph")).toHaveText("~", {
+      useInnerText: true,
+    });
+  });
+
+  test("on a phone the bar's button fits inside the window", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    await scrollHeroButtonAboveTheWindow(page);
+
+    await expect(
+      getBar(page).getByRole("link", {
+        name: "Get your license key for $5",
+        exact: true,
+      }),
+    ).toBeInViewport({ ratio: 1 });
   });
 });

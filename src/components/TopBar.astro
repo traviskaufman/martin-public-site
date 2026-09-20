@@ -6,7 +6,8 @@ import LicenseKeyButton from "./LicenseKeyButton.astro";
 
 <header class="top-bar" data-showing="false">
   <p class="wordmark">
-    <span class="tilde">~</span> martin
+    <span class="tilde">~</span>
+    <span class="name">martin</span>
   </p>
   <div class="actions">
     <span class="source">
@@ -75,7 +76,8 @@ import LicenseKeyButton from "./LicenseKeyButton.astro";
   }
 
   @media (max-width: 599px) {
-    .source {
+    .source,
+    .name {
       display: none;
     }
   }
