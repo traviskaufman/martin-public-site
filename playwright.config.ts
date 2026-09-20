@@ -18,10 +18,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run build && npm run preview",
+    command: "npm run build && npx wrangler pages dev dist --port 4321",
     url: "http://localhost:4321",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
-    env: { ASTRO_PREVIEW_BACKGROUND: "1" },
   },
 });

@@ -43,9 +43,10 @@ const examples = [
   },
   {
     heading: "What happens after you pay",
-    title: "claude --agent martin",
-    command: "/plugin",
-    excerpt: "martin",
+    title: "bash",
+    command:
+      'curl -fsSL https://trymartin.dev/install.sh | MARTIN_API_KEY="$(cat ~/Downloads/martin-api-key.txt)" bash',
+    excerpt: "Done! You are now ready to use Martin in Claude Code:",
   },
   {
     heading: "FAQ",

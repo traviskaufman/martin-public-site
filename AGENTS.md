@@ -14,7 +14,7 @@ npm run format
 npm run build
 ```
 
-`npm test` builds the site and drives the production build in Chromium; the dev server is not used by tests.
+`npm test` builds the site and serves `dist/` with `wrangler pages dev`, so the Pages Function in `functions/` runs as it does in production, and drives it in Chromium; the dev server is not used by tests.
 
 ## Layout
 
@@ -25,7 +25,8 @@ npm run build
 - `src/styles/global.css` — the Solarized tokens, the `@font-face` rules, and the shared button and link styles; `src/styles/terminal.css` — the terminal chrome and pane, shared by `Terminal` and `ClosingPrompt`.
 - `public/fonts/` — Geist and Geist Mono as Latin-subset variable woff2 files (SIL OFL 1.1, licence alongside).
 - `public/install.sh` — the installer buyers pipe into `bash`: it reads `MARTIN_API_KEY`, backs up and merges `~/.claude/settings.json` with Perl's `JSON::PP`, installs the plugin, and adds the `martin` alias. It prints plain lines only, so it reads the same without a TTY.
-- `public/llms.txt` — the install instructions for agents, linked from the footer; it tells them to read the key from `~/Downloads/martin-api-key.txt` and never ask for it.
+- `functions/index.ts` — the site's one Cloudflare Pages Function: a request for `/` whose `Accept` header names `text/markdown` (Claude Code's fetch sends `text/markdown, text/html, */*`) is answered with `llms.txt`; every other request falls through to the static page. `wrangler pages deploy dist` picks the directory up from the repository root.
+- `public/llms.txt` — the install instructions for agents, served in place of the page to an agent that asks for markdown and linked from the footer; it tells them to read the key from `~/Downloads/martin-api-key.txt` and never ask for it.
 - `.github/workflows/deploy.yml` — every push to `main` runs the checks and tests, builds, and deploys `dist/` to Cloudflare Pages.
 - `tests/*.spec.ts` — Playwright end-to-end tests; every test opens the site in a browser and asserts what a visitor sees.
 - `.martin/` — Martin's build ledger. Only `.martin/README.md` is tracked.

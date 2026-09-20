@@ -23,12 +23,14 @@
     "esbuild": true
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260920.1",
     "@playwright/test": "^1.63.0",
     "eslint": "^10.10.0",
     "eslint-plugin-astro": "^1.7.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
     "prettier": "^3.9.6",
-    "prettier-plugin-astro": "^1.0.0"
+    "prettier-plugin-astro": "^1.0.0",
+    "wrangler": "^4.135.0"
   }
 }

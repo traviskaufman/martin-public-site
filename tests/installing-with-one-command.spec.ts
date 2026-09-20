@@ -235,6 +235,30 @@ test("the instructions for agents are served", async ({ request }) => {
   );
 });
 
+test("an agent that asks for markdown is given the instructions for agents", async ({
+  request,
+}) => {
+  const instructions = await (await request.get("/llms.txt")).text();
+
+  const response = await request.get("/", {
+    headers: { Accept: "text/markdown, text/html, */*" },
+  });
+
+  expect(await response.text()).toBe(instructions);
+  expect(response.headers()["content-type"]).toBe(
+    "text/markdown; charset=utf-8",
+  );
+  expect(response.headers()["vary"]).toContain("Accept");
+});
+
+test("a browser still gets the page", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(
+    page.getByRole("heading", { name: "What happens after you pay" }),
+  ).toBeVisible();
+});
+
 test("the footer points agents at the instructions", async ({ page }) => {
   await page.goto("/");
 

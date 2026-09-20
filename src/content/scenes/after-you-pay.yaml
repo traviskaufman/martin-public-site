@@ -1,11 +1,11 @@
 order: 8
 section: after-you-pay
-title: claude --agent martin
+title: bash
 command: |
-  /plugin
+  curl -fsSL https://trymartin.dev/install.sh | MARTIN_API_KEY="$(cat ~/Downloads/martin-api-key.txt)" bash
 transcript: |
-  Plugins  Discover  Installed  Marketplaces  Errors  Stats
+  Installing martin plugin...
+  Backed up ~/.claude/settings.json to ~/.claude/settings.json.before-martin
+  Done! You are now ready to use Martin in Claude Code:
 
-  ⌕ martin
-
-  martin Plugin · martin · ✔ enabled · 15 skills · 178 uses
+  claude --agent martin "Introduce yourself and describe your capabilities"

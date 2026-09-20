@@ -22,7 +22,7 @@ Serves the site at http://localhost:4321.
 npm test
 ```
 
-Builds the site and runs the Playwright tests in `tests/` against `astro preview`.
+Builds the site and runs the Playwright tests in `tests/` against the build served by `wrangler pages dev`, which runs the Pages Function in `functions/` as production does.
 
 ## Check
 
