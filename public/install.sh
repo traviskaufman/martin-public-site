@@ -6,6 +6,7 @@ marketplace_url="https://api.trymartin.dev/marketplace.json"
 settings="$HOME/.claude/settings.json"
 settings_backup="$settings.before-martin"
 martin_alias="alias martin='claude --agent martin'"
+profile_given_alias=""
 
 error() {
   echo "error: $*" >&2
@@ -83,7 +84,14 @@ add_alias() {
     bash) profile="$HOME/.bashrc" ;;
     *) return 0 ;;
   esac
-  grep -qF "alias martin=" "$profile" 2>/dev/null || echo "$martin_alias" >>"$profile"
+  grep -qF "alias martin=" "$profile" 2>/dev/null && return 0
+  echo "$martin_alias" >>"$profile"
+  profile_given_alias='~/'"${profile#"$HOME"/}"
+}
+
+print_alias_tip() {
+  [[ -n "$profile_given_alias" ]] || return 0
+  printf '\nTIP: `martin` alias added to %s. Reload your current shell to use\n' "$profile_given_alias"
 }
 
 main() {
@@ -104,6 +112,7 @@ Done! You are now ready to use Martin in Claude Code:
 
 claude --agent martin "Introduce yourself and describe your capabilities"
 DONE
+  print_alias_tip
 }
 
 main

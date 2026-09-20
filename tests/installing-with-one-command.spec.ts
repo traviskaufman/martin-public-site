@@ -97,6 +97,9 @@ test.describe("with a working key", () => {
     expect(run.stdout).toContain(
       'Done! You are now ready to use Martin in Claude Code:\n\nclaude --agent martin "Introduce yourself and describe your capabilities"',
     );
+    expect(run.stdout).toContain(
+      "TIP: `martin` alias added to ~/.zshrc. Reload your current shell to use",
+    );
     expect(run.status).toBe(0);
     expect(aliasCount(machine)).toBe(1);
 
@@ -123,6 +126,7 @@ test.describe("with a working key", () => {
     expect(secondRun.stdout).toContain(
       "Done! You are now ready to use Martin in Claude Code:",
     );
+    expect(secondRun.stdout).not.toContain("TIP:");
     expect(aliasCount(machine)).toBe(1);
     expect(readFileSync(machine.settingsPath, "utf8")).toBe(
       settingsAfterFirstRun,
