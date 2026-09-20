@@ -9,3 +9,5 @@ transcript: |
   Done! You are now ready to use Martin in Claude Code:
 
   claude --agent martin "Introduce yourself and describe your capabilities"
+
+  TIP: `martin` alias added to ~/.bashrc. Reload your current shell to use
