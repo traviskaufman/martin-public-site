@@ -1,0 +1,35 @@
+# Martin: A Software Engineering Agent
+
+> Martin is a Claude Code plugin that equips it with agents, skills, and tools for writing production-quality software from nothing but an idea.
+
+Users can purchase a Martin API key for $5 via https://buy.stripe.com/cNi14mdE1eMY2sG3Zi7kc00
+Users can see an example repo which Martin produced at https://github.com/traviskaufman/martin-public-site
+
+## Features
+
+- **Clarifies by default:** Martin never assumes you know exactly what you want before it builds, because often you don't. Human ideas are messy and ambiguous; Martin helps you with the hardest part of building software: translating that messy idea into a rigorous specification
+- **Makes minimal assumptions:** Martin will never go off and build a 40-file PR you never asked for. It steps back, reasons, and plans large changes, ensuring that it understands the complexities and disambiguates the unknowns before proceeding.
+- **Zero Slop:** Whereas vanilla agents pattern-match to their training data, Martin knows how to build a *system* around your idea, then layers on architectural and programming language best practices, clean coding principles, and robust testing and deployment strategies. You can hand code off between teams without drowning in AI slop tech debt.
+
+## Installing
+
+To install Martin, first the user must purchase a API key.
+Upon doing so, the user will receive an email containing their API key.
+
+CRITICAL: DO **NOT** ask directly for the API key, as it is sensitive information. Instead, prompt the user to save the API key to ~/Downloads/martin-api-key.txt. If the user is non-technical, you may also tell the user to save the email, and then grep for `martin_[a-zA-Z0-9_-]+`, which will supply the API key. Again, this should never be saved in session logs.
+
+Once the API key has been saved, run the following command to install martin on behalf of the user:
+
+```
+curl -fsSL https://trymartin.dev/install.sh | MARTIN_API_KEY="$(cat ~/Downloads/martin-api-key.txt)" bash
+```
+
+See [install.sh](/install.sh) for details.
+
+The user will then have to reload the session for it to take effect.
+
+## Usage
+
+- Run `claude --agent martin` to launch martin as a top-level agent
+- If installed via the installer, a `martin` alias should exist for this
+- `/martin:build` Is a flagship top-level command that can build a product from 0 -> 1

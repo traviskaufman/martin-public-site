@@ -17,8 +17,8 @@ import CodeBlock from "./CodeBlock.astro";
     </Step>
     <Step>
       <span>
-        Run <CodeChip>/plugin</CodeChip> in Claude Code. Search for{" "}
-        <CodeChip>martin</CodeChip>. Install me globally.
+        Paste the install command from that email into your terminal. I install
+        myself into Claude Code.
       </span>
     </Step>
     <Step>
@@ -32,11 +32,12 @@ import CodeBlock from "./CodeBlock.astro";
       </span>
     </Step>
   </ol>
+  <CodeBlock command="curl -fsSL https://trymartin.dev/install.sh | MARTIN_API_KEY=<your key> bash" />
   <p>
-    Want <CodeChip>martin</CodeChip> as a drop-in replacement for{" "}
-    <CodeChip>claude</CodeChip>? Add this to your shell profile:
+    I also add a <CodeChip>martin</CodeChip> alias to your shell profile, so{" "}
+    <CodeChip>martin</CodeChip> works as a drop-in replacement for{" "}
+    <CodeChip>claude</CodeChip>.
   </p>
-  <CodeBlock command="alias martin='claude --agent martin'" />
   <div class="actions">
     <LicenseKeyButton />
   </div>

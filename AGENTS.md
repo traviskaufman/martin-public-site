@@ -24,6 +24,8 @@ npm run build
 - `src/scripts/` — the terminal's client code: `terminal-stage.ts` (the DOM), `scene-follower.ts` (which section is in the top third), `playback.ts` (typing; imported lazily).
 - `src/styles/global.css` — the Solarized tokens, the `@font-face` rules, and the shared button and link styles; `src/styles/terminal.css` — the terminal chrome and pane, shared by `Terminal` and `ClosingPrompt`.
 - `public/fonts/` — Geist and Geist Mono as Latin-subset variable woff2 files (SIL OFL 1.1, licence alongside).
+- `public/install.sh` — the installer buyers pipe into `bash`: it reads `MARTIN_API_KEY`, backs up and merges `~/.claude/settings.json` with Perl's `JSON::PP`, installs the plugin, and adds the `martin` alias. It prints plain lines only, so it reads the same without a TTY.
+- `public/llms.txt` — the install instructions for agents, linked from the footer; it tells them to read the key from `~/Downloads/martin-api-key.txt` and never ask for it.
 - `.github/workflows/deploy.yml` — every push to `main` runs the checks and tests, builds, and deploys `dist/` to Cloudflare Pages.
 - `tests/*.spec.ts` — Playwright end-to-end tests; every test opens the site in a browser and asserts what a visitor sees.
 - `.martin/` — Martin's build ledger. Only `.martin/README.md` is tracked.
