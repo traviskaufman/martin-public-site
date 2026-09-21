@@ -4,7 +4,8 @@ const PREVIEW_TAGS: { property: string; content: string }[] = [
   { property: "og:site_name", content: "Martin" },
   {
     property: "og:description",
-    content: "Turns Claude Code into an expert software engineer",
+    content:
+      "I ask before I build, plan before I code, and write the tests first. A Claude Code plugin for $5.",
   },
 ];
 
@@ -19,10 +20,10 @@ for (const { property, content } of PREVIEW_TAGS) {
   });
 }
 
-test("The browser tab is titled with the headline alone", async ({ page }) => {
+test("The browser tab names Martin first", async ({ page }) => {
   await page.goto("/");
 
   await expect(page).toHaveTitle(
-    "Turn your coding agent into a Software Engineering agent",
+    "Martin — a software engineer for Claude Code",
   );
 });

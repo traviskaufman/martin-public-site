@@ -5,7 +5,7 @@ const SITE_URL = "https://trymartin.dev";
 const OG_TAGS: { property: string; content: string }[] = [
   {
     property: "og:title",
-    content: "Turn your coding agent into a Software Engineering agent",
+    content: "Martin — the senior software engineer for Claude Code",
   },
   {
     property: "og:image",

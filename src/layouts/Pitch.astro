@@ -1,6 +1,12 @@
 ---
 import "../styles/global.css";
-import { headline, previewDescription, searchDescription } from "../pitch";
+import {
+  headline,
+  previewDescription,
+  previewTitle,
+  searchDescription,
+  tabTitle,
+} from "../pitch";
 import VisitCounter from "../components/VisitCounter.astro";
 import Footer from "../components/Footer.astro";
 import TopBar from "../components/TopBar.astro";
@@ -23,7 +29,7 @@ import TopBar from "../components/TopBar.astro";
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={searchDescription} />
     <meta property="og:site_name" content="Martin" />
-    <meta property="og:title" content={headline} />
+    <meta property="og:title" content={previewTitle} />
     <meta property="og:description" content={previewDescription} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={new URL("/", Astro.site).toString()} />
@@ -35,7 +41,7 @@ import TopBar from "../components/TopBar.astro";
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={headline} />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>{headline}</title>
+    <title>{tabTitle}</title>
     <link
       rel="preload"
       href="/fonts/geist-latin-wght-normal.woff2"
