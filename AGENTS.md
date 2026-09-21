@@ -20,6 +20,7 @@ npm run build
 
 - `src/pages/index.astro` — the only page: a content column of sections (the hero opens with the mark, 64px tall, above the headline) beside a terminal track, then the closing prompt; `src/layouts/Pitch.astro` is its shell (head, meta tags, the theme guard, analytics, footer, top bar).
 - `src/components/` — one `.astro` file per Figma component, in page order: `LicenseKeyButton`, `SourceLink`, `Differentiators` with `DifferentiatorPanel`, `ComparisonVanilla` with `Eyebrow`, `WhyTravisBuiltMe`, `AfterYouPay` with `Step`, `CodeChip`, `CodeBlock`, `Faq` with `FaqItem`, `ClosingPrompt`, `Footer`; `TerminalSheet` wraps `Terminal`; `TopBar` holds `ThemeToggle`; `Mark` is the logo from `src/assets/mark.svg`, teal in the top bar and muted in the footer; `VisitCounter` is the analytics snippet.
+- `src/assets/` — the mark and the icons as `.svg` files, imported as components.
 - `src/pitch.ts`, `src/differentiators.ts`, `src/faq.ts`, `src/links.ts` — copy and URLs as constants; `src/content/comparisons/*.yaml` — the transcripts (never reworded); `src/content/scenes/*.yaml` — what the terminal plays under each section, resolved by `src/scenes.ts`.
 - `src/scripts/` — the terminal's client code: `terminal-stage.ts` (the DOM), `scene-follower.ts` (which section is in the top third), `playback.ts` (typing; imported lazily).
 - `src/styles/global.css` — the Solarized tokens, the `@font-face` rules, and the shared button and link styles; `src/styles/terminal.css` — the terminal chrome and pane, shared by `Terminal` and `ClosingPrompt`.

@@ -1,4 +1,7 @@
 ---
+import Pause from "../assets/pause.svg";
+import Play from "../assets/play.svg";
+import Replay from "../assets/replay.svg";
 import "../styles/terminal.css";
 
 const { scenes } = Astro.props;
@@ -26,30 +29,11 @@ const [first] = scenes;
         2×
       </button>
       <button type="button" class="playback" aria-label="Pause">
-        <svg class="pause-icon" viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M6.5 2.5H3.5V13.5H6.5V2.5Z" fill="currentColor"></path>
-          <path d="M12.5 2.5H9.5V13.5H12.5V2.5Z" fill="currentColor"></path>
-        </svg>
-        <svg class="play-icon" viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M4 2.5V13.5L13 8L4 2.5Z" fill="currentColor"></path>
-        </svg>
+        <Pause class="pause-icon" aria-hidden="true" />
+        <Play class="play-icon" aria-hidden="true" />
       </button>
       <button type="button" class="replay" aria-label="Replay">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path
-            d="M13 8C12.9933 9.15335 12.588 10.2689 11.8529 11.1576C11.1177 12.0464 10.098 12.6537 8.96634 12.8765C7.83471 13.0994 6.66082 12.9242 5.64358 12.3807C4.62634 11.8371 3.82831 10.9585 3.3847 9.89387C2.9411 8.82922 2.8792 7.64395 3.20951 6.53888C3.53981 5.43382 4.242 4.47693 5.1971 3.83035C6.15219 3.18378 7.30145 2.88728 8.45014 2.99109C9.59883 3.09491 10.6763 3.59266 11.5 4.4"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-          ></path>
-          <path
-            d="M13 2.5V5.5H10"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></path>
-        </svg>
+        <Replay aria-hidden="true" />
       </button>
     </span>
   </div>
