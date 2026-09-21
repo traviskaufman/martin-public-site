@@ -1,9 +1,12 @@
 ---
+import Mark from "./Mark.astro";
 import SourceLink from "./SourceLink.astro";
 ---
 
 <footer>
-  <p>Copyright (c) 2026 Singularity Studios, LLC</p>
+  <p class="company">
+    <Mark /> Copyright (c) 2026 Singularity Studios, LLC
+  </p>
   <p>
     <SourceLink label="View website source code" />
   </p>
@@ -23,6 +26,13 @@ import SourceLink from "./SourceLink.astro";
     color: var(--color-text-muted);
     font-size: 0.9375rem;
     line-height: 1.5rem;
+  }
+
+  .company {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    --mark-color: var(--color-text-muted);
   }
 
   @media (max-width: 1199px) {

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Pitch from "../layouts/Pitch.astro";
+import Mark from "../components/Mark.astro";
 import LicenseKeyButton from "../components/LicenseKeyButton.astro";
 import SourceLink from "../components/SourceLink.astro";
 import ComparisonVanilla from "../components/ComparisonVanilla.astro";
@@ -27,6 +28,9 @@ const scenes = await loadScenes();
   <div class="tracks">
     <div class="content">
       <section class="hero">
+        <div class="logo">
+          <Mark />
+        </div>
         <h1 id="hero">{headline}</h1>
         <p class="pitch">{pitch}</p>
         <div class="actions">
@@ -91,6 +95,11 @@ const scenes = await loadScenes();
     justify-content: center;
     gap: 2rem;
     min-height: 35rem;
+  }
+
+  .logo {
+    display: flex;
+    font-size: 4rem;
   }
 
   .pitch {

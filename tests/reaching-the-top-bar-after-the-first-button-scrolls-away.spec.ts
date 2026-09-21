@@ -102,20 +102,6 @@ test.describe("in a 390px wide window", () => {
     ).toHaveCount(0);
   });
 
-  test("on a phone the bar keeps the tilde and drops the wordmark", async ({
-    page,
-  }) => {
-    await page.goto("/");
-
-    await scrollHeroButtonAboveTheWindow(page);
-
-    const bar = getBar(page);
-    await expect(bar).toBeVisible();
-    await expect(bar.getByRole("paragraph")).toHaveText("~", {
-      useInnerText: true,
-    });
-  });
-
   test("on a phone the bar's button fits inside the window", async ({
     page,
   }) => {

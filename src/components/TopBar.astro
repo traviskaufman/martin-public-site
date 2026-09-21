@@ -1,4 +1,5 @@
 ---
+import Mark from "./Mark.astro";
 import SourceLink from "./SourceLink.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import LicenseKeyButton from "./LicenseKeyButton.astro";
@@ -6,8 +7,10 @@ import LicenseKeyButton from "./LicenseKeyButton.astro";
 
 <header class="top-bar" data-showing="false">
   <p class="wordmark">
-    <span class="tilde">~</span>
-    <span class="name">martin</span>
+    <Mark />
+    <span class="name" aria-hidden="true">
+      martin
+    </span>
   </p>
   <div class="actions">
     <span class="source">
@@ -47,6 +50,9 @@ import LicenseKeyButton from "./LicenseKeyButton.astro";
   }
 
   .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     color: var(--color-heading);
     font-family: var(--font-mono);
     font-size: 1rem;
@@ -55,8 +61,8 @@ import LicenseKeyButton from "./LicenseKeyButton.astro";
     white-space: nowrap;
   }
 
-  .tilde {
-    color: var(--color-accent-text);
+  .name {
+    letter-spacing: -0.04em;
   }
 
   .actions {

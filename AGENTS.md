@@ -18,8 +18,8 @@ npm run build
 
 ## Layout
 
-- `src/pages/index.astro` — the only page: a content column of sections beside a terminal track, then the closing prompt; `src/layouts/Pitch.astro` is its shell (head, meta tags, the theme guard, analytics, footer, top bar).
-- `src/components/` — one `.astro` file per Figma component, in page order: `LicenseKeyButton`, `SourceLink`, `Differentiators` with `DifferentiatorPanel`, `ComparisonVanilla` with `Eyebrow`, `WhyTravisBuiltMe`, `AfterYouPay` with `Step`, `CodeChip`, `CodeBlock`, `Faq` with `FaqItem`, `ClosingPrompt`, `Footer`; `TerminalSheet` wraps `Terminal`; `TopBar` holds `ThemeToggle`; `VisitCounter` is the analytics snippet.
+- `src/pages/index.astro` — the only page: a content column of sections (the hero opens with the mark, 64px tall, above the headline) beside a terminal track, then the closing prompt; `src/layouts/Pitch.astro` is its shell (head, meta tags, the theme guard, analytics, footer, top bar).
+- `src/components/` — one `.astro` file per Figma component, in page order: `LicenseKeyButton`, `SourceLink`, `Differentiators` with `DifferentiatorPanel`, `ComparisonVanilla` with `Eyebrow`, `WhyTravisBuiltMe`, `AfterYouPay` with `Step`, `CodeChip`, `CodeBlock`, `Faq` with `FaqItem`, `ClosingPrompt`, `Footer`; `TerminalSheet` wraps `Terminal`; `TopBar` holds `ThemeToggle`; `Mark` is the logo from `src/assets/mark.svg`, teal in the top bar and muted in the footer; `VisitCounter` is the analytics snippet.
 - `src/pitch.ts`, `src/differentiators.ts`, `src/faq.ts`, `src/links.ts` — copy and URLs as constants; `src/content/comparisons/*.yaml` — the transcripts (never reworded); `src/content/scenes/*.yaml` — what the terminal plays under each section, resolved by `src/scenes.ts`.
 - `src/scripts/` — the terminal's client code: `terminal-stage.ts` (the DOM), `scene-follower.ts` (which section is in the top third), `playback.ts` (typing; imported lazily).
 - `src/styles/global.css` — the Solarized tokens, the `@font-face` rules, and the shared button and link styles; `src/styles/terminal.css` — the terminal chrome and pane, shared by `Terminal` and `ClosingPrompt`.
@@ -44,7 +44,7 @@ npm run build
 
 ## Preview image
 
-`public/og.png` is the closing prompt — the docked terminal asking "> ready to build?" above the license-key button — rendered once and committed; regenerate it with the following command after `npm install`.
+`public/og.png` is the terminal window asking "> ready to build?", filling the whole card, with the mark in the pane's bottom-right corner — rendered once and committed; regenerate it with the following command after `npm install`.
 
 ```sh
 node --input-type=module <<'EOF'
@@ -60,24 +60,19 @@ const styles = [
   ),
   readFileSync("src/styles/terminal.css", "utf8"),
   `
-    body {
-      width: 1200px;
-      height: 630px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 40px;
-      padding: 80px;
-    }
-    .terminal { width: 100%; height: 240px; font-size: 1.25rem; line-height: 2rem; }
-    .terminal .chrome { padding: 1rem 1.5rem; }
-    .terminal .terminal-title, .terminal .speed { font-size: 1.125rem; line-height: 1.75rem; }
-    .terminal .pane { padding: 2rem; }
-    .license-key-button { font-size: 1.5rem; line-height: 2rem; padding: 1.25rem 2.25rem; }
-    .mark { position: absolute; right: 80px; bottom: 40px; color: var(--color-accent-text); font-family: var(--font-mono); font-size: 1.25rem; }
+    body { width: 1200px; height: 630px; }
+    .terminal { width: 100%; height: 100%; border: none; border-radius: 0; font-size: 5.5rem; line-height: 7rem; }
+    .terminal .chrome { padding: 1.75rem 2.5rem; }
+    .terminal .lights { gap: 0.75rem; }
+    .terminal .lights i { width: 1.125rem; height: 1.125rem; }
+    .terminal .terminal-title { font-size: 1.75rem; line-height: 2.25rem; }
+    .terminal .pane { position: relative; padding: 3.5rem 4.5rem; }
+    .terminal .command { align-items: center; gap: 0.35em; }
+    .terminal .pane svg { position: absolute; right: 72px; bottom: 72px; height: 200px; width: auto; color: var(--color-accent); }
   `,
 ].join("\n");
+
+const mark = readFileSync("src/assets/mark.svg", "utf8");
 
 const html = `<!doctype html>
 <html lang="en">
@@ -87,14 +82,13 @@ const html = `<!doctype html>
       <div class="chrome">
         <span class="lights"><i></i><i></i><i></i></span>
         <span class="terminal-title">claude --agent martin</span>
-        <span class="controls"><span class="speed">2×</span></span>
+        <span class="controls"></span>
       </div>
       <div class="pane">
         <p class="command"><span class="prompt">&gt;</span> <span>ready to build?</span></p>
+        ${mark}
       </div>
     </div>
-    <span class="license-key-button">Get your license key for $5</span>
-    <span class="mark">trymartin.dev</span>
   </body>
 </html>`;
 
@@ -108,4 +102,12 @@ await page.evaluate(() => document.fonts.ready);
 await page.screenshot({ path: "public/og.png", type: "png" });
 await browser.close();
 EOF
+```
+
+## Tab icon
+
+`public/favicon.svg` is the mark from `src/assets/mark.svg` in #2aa198, centred in a square viewBox; `public/favicon.ico` is rendered from it once with ImageMagick and committed.
+
+```sh
+magick -background none public/favicon.svg -define icon:auto-resize=32 public/favicon.ico
 ```
