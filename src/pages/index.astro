@@ -1,27 +1,47 @@
 ---
-import { getCollection } from "astro:content";
+import { getEntry } from "astro:content";
 import Pitch from "../layouts/Pitch.astro";
 import Mark from "../components/Mark.astro";
 import LicenseKeyButton from "../components/LicenseKeyButton.astro";
 import SourceLink from "../components/SourceLink.astro";
+import ComparisonTabs from "../components/ComparisonTabs.astro";
 import ComparisonVanilla from "../components/ComparisonVanilla.astro";
 import Terminal from "../components/Terminal.astro";
-import TerminalSheet from "../components/TerminalSheet.astro";
+import TerminalTrack from "../components/TerminalTrack.astro";
 import ClosingPrompt from "../components/ClosingPrompt.astro";
-import Differentiators from "../components/Differentiators.astro";
 import WhyTravisBuiltMe from "../components/WhyTravisBuiltMe.astro";
 import AfterYouPay from "../components/AfterYouPay.astro";
 import Faq from "../components/Faq.astro";
 import { headline, pitch } from "../pitch";
-import { comparisonHeadings } from "../comparisons";
-import { loadScenes } from "../scenes";
+import { sections } from "../sections";
+import { loadBeats } from "../beats";
+import { asOwnSession } from "../session";
 
-const comparisonsByHeading = new Map(
-  (await getCollection("comparisons"))
-    .sort((a, b) => a.data.order - b.data.order)
-    .map((entry) => [entry.data.heading, entry.data]),
+const beats = await loadBeats();
+const ownSession = (section) => [
+  asOwnSession(
+    beats,
+    beats.findIndex((beat) => beat.section === section),
+  ),
+];
+
+const recordings = new Map(
+  await Promise.all(
+    sections.map(async (section) => {
+      const entries = await Promise.all(
+        section.comparisons.map((id) => getEntry("comparisons", id)),
+      );
+      return [
+        section.id,
+        entries.filter((entry) => entry).map((entry) => entry.data),
+      ];
+    }),
+  ),
 );
-const scenes = await loadScenes();
+const vanillaOf = (id) => ({
+  prompt: recordings.get(id)[0]?.prompt ?? "",
+  excerpts: recordings.get(id).map((recording) => recording.vanilla),
+});
 ---
 
 <Pitch>
@@ -39,36 +59,43 @@ const scenes = await loadScenes();
             I built this site. <SourceLink />
           </p>
         </div>
+        <Terminal beats={ownSession("hero")} beat={0} />
       </section>
-      <Differentiators />
-      {comparisonHeadings.map((heading) => {
-        const data = comparisonsByHeading.get(heading);
-        if (data) {
-          return (
-            <ComparisonVanilla
-              heading={data.heading}
-              prompt={data.prompt}
-              vanilla={data.vanilla}
-              differentiator={data.differentiator}
-            />
-          );
-        }
-        return (
-          import.meta.env.DEV && (
-            <section class="comparison-placeholder">
-              <h2>{heading}</h2>
-              <p>I haven't run this one yet — check back soon.</p>
-            </section>
-          )
-        );
-      })}
-      <WhyTravisBuiltMe />
+      {sections.map((section) => (
+        <section class="differentiator" aria-labelledby={section.id}>
+          <h2 id={section.id}>{section.title}</h2>
+          <p class="pitch">{section.sentence}</p>
+          {import.meta.env.DEV &&
+            recordings.get(section.id).length < section.comparisons.length && (
+              <p class="comparison-placeholder">
+                I haven't run this one yet — check back soon.
+              </p>
+            )}
+          <ComparisonTabs name={section.id}>
+            <Terminal slot="martin" beats={ownSession(section.id)} beat={0} />
+            <ComparisonVanilla slot="vanilla" {...vanillaOf(section.id)} />
+          </ComparisonTabs>
+        </section>
+      ))}
+      <WhyTravisBuiltMe>
+        <Terminal beats={ownSession("why")} beat={0} />
+      </WhyTravisBuiltMe>
       <AfterYouPay />
       <Faq />
     </div>
-    <TerminalSheet>
-      <Terminal scenes={scenes} />
-    </TerminalSheet>
+    <TerminalTrack>
+      <ComparisonTabs name="track" follows>
+        <Terminal slot="martin" beats={beats} beat={0} follows />
+        <Fragment slot="vanilla">
+          {sections.map((section) => (
+            <ComparisonVanilla
+              section={section.id}
+              {...vanillaOf(section.id)}
+            />
+          ))}
+        </Fragment>
+      </ComparisonTabs>
+    </TerminalTrack>
   </div>
   <ClosingPrompt />
 </Pitch>
@@ -97,6 +124,10 @@ const scenes = await loadScenes();
     min-height: 35rem;
   }
 
+  .hero :global(.terminal) {
+    height: auto;
+  }
+
   .logo {
     display: flex;
     font-size: 4rem;
@@ -119,6 +150,16 @@ const scenes = await loadScenes();
     align-items: center;
     gap: 0.5rem;
     white-space: nowrap;
+  }
+
+  .differentiator {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .differentiator :global(.comparison-tabs) {
+    margin-top: 0.75rem;
   }
 
   .comparison-placeholder {

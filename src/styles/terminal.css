@@ -94,6 +94,7 @@
 .terminal[data-state="static"] .controls button,
 .terminal .controls .replay,
 .terminal .play-icon,
+.terminal[data-state="waiting"] .controls .playback,
 .terminal[data-state="finished"] .controls .playback,
 .terminal[data-state="loading"] .pause-icon,
 .terminal[data-state="paused"] .pause-icon {
@@ -143,6 +144,20 @@
   opacity: 0.4;
 }
 
+:root[data-js] .terminal[data-state="static"] .transcript {
+  visibility: hidden;
+}
+
+:root[data-js=""] .terminal[data-state="static"] .transcript {
+  animation: reveal-transcript 0s 3s forwards;
+}
+
+@keyframes reveal-transcript {
+  to {
+    visibility: visible;
+  }
+}
+
 .terminal[data-transition="fading"] .command,
 .terminal[data-transition="fading"] .transcript {
   opacity: 0;
@@ -160,6 +175,7 @@
   display: block;
 }
 
+.terminal[data-state="waiting"] .cursor,
 .terminal[data-state="loading"] .cursor,
 .terminal[data-state="paused"] .cursor {
   display: block;
@@ -169,6 +185,16 @@
 @keyframes blink {
   to {
     visibility: hidden;
+  }
+}
+
+.terminal[data-inline] {
+  height: 20rem;
+}
+
+@media (min-width: 900px) {
+  .terminal[data-inline] {
+    display: none;
   }
 }
 

@@ -1,5 +1,4 @@
-import type { Scene } from "../scenes";
-import type { SceneFollower } from "./scene-follower";
+import type { Beat } from "../session";
 import type { TerminalStage } from "./terminal-stage";
 
 const BASE_CHARACTERS_PER_SECOND = 40;
@@ -9,21 +8,19 @@ const FADE_MILLISECONDS = 150;
 
 type Phase = "command" | "transcript" | "done";
 
-export function startPlayback(
-  stage: TerminalStage,
-  follower: SceneFollower,
-): Playback {
-  return new Playback(stage, follower);
+export function startPlayback(stage: TerminalStage, beat: number): Playback {
+  return new Playback(stage, beat);
 }
 
-class Playback {
+export class Playback {
   private readonly stage: TerminalStage;
+  private readonly beats: Beat[];
   private readonly reducedMotion = matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
   private readonly speedButton: HTMLButtonElement;
   private readonly playbackButton: HTMLButtonElement;
-  private scene: Scene;
+  private beat: number;
   private speedIndex = DEFAULT_SPEED_INDEX;
   private phase: Phase = "command";
   private typed = 0;
@@ -31,9 +28,10 @@ class Playback {
   private lastTime = 0;
   private frame = 0;
 
-  constructor(stage: TerminalStage, follower: SceneFollower) {
+  constructor(stage: TerminalStage, beat: number) {
     this.stage = stage;
-    this.scene = follower.current;
+    this.beats = stage.beats;
+    this.beat = beat;
     const controls = stage.element;
     this.speedButton = controls.querySelector(".speed")!;
     this.playbackButton = controls.querySelector(".playback")!;
@@ -41,44 +39,68 @@ class Playback {
     this.playbackButton.addEventListener("click", () => this.togglePlayback());
     controls
       .querySelector(".replay")!
-      .addEventListener("click", () => this.play(this.scene));
-    follower.follow((scene) => this.change(scene));
-    stage.state = "loading";
-    this.play(this.scene);
+      .addEventListener("click", () => this.play(this.beat));
+    const opening = this.beats[beat];
+    if (opening.continues || opening.transcript) {
+      this.play(beat);
+    } else {
+      this.finish(beat);
+    }
   }
 
-  private change(scene: Scene): void {
+  change(index: number): void {
     this.stop();
-    this.scene = scene;
+    const previous = this.beat;
+    this.beat = index;
     if (this.reducedMotion) {
-      this.finish(scene);
-      return;
+      this.finish(index);
+    } else if (this.beats[index].session !== this.beats[previous].session) {
+      this.fadeThen(() => this.play(index));
+    } else if (index < previous) {
+      this.finish(index);
+    } else {
+      this.play(index);
     }
+  }
+
+  private fadeThen(then: () => void): void {
+    const target = this.beat;
     this.stage.element.dataset.transition = "fading";
     setTimeout(() => {
       delete this.stage.element.dataset.transition;
-      if (this.scene === scene) {
-        this.play(scene);
+      if (this.beat === target) {
+        then();
       }
     }, FADE_MILLISECONDS);
   }
 
-  private play(scene: Scene): void {
+  private play(index: number): void {
     this.stop();
-    if (this.reducedMotion || scene.entry === "finished") {
-      this.finish(scene);
+    if (this.reducedMotion) {
+      this.finish(index);
       return;
     }
-    this.stage.begin(scene);
-    this.phase = "command";
+    if (this.beats[index].continues) {
+      this.stage.append(index);
+      this.phase = "transcript";
+    } else {
+      this.stage.open(index);
+      this.phase = "command";
+    }
     this.typed = 0;
     this.carry = 0;
     this.resume();
   }
 
-  private finish(scene: Scene): void {
-    this.stage.show(scene);
-    this.stage.state = "finished";
+  private finish(index: number): void {
+    this.stage.show(index);
+    this.settle();
+  }
+
+  private settle(): void {
+    this.stage.state = this.beats[this.beat].transcript
+      ? "finished"
+      : "waiting";
   }
 
   private resume(): void {
@@ -104,7 +126,7 @@ class Playback {
     } else if (this.stage.state === "paused") {
       this.resume();
     } else {
-      this.play(this.scene);
+      this.play(this.beat);
     }
   }
 
@@ -123,26 +145,31 @@ class Playback {
     this.lastTime = now;
     this.type(count);
     if (this.phase === "done") {
-      this.stage.state = "finished";
+      this.settle();
       return;
     }
     this.frame = requestAnimationFrame((next) => this.tick(next));
   }
 
   private type(count: number): void {
-    const text =
-      this.phase === "command" ? this.scene.command : this.scene.transcript;
+    const beat = this.beats[this.beat];
+    const text = this.phase === "command" ? beat.command : beat.transcript;
     this.typed = Math.min(text.length, this.typed + count);
     const visible = text.slice(0, this.typed);
     if (this.phase === "command") {
       this.stage.typeCommand(visible);
     } else {
-      this.stage.typeTranscript(visible);
+      this.stage.typeBeat(visible);
     }
     if (this.typed < text.length) {
       return;
     }
-    this.phase = this.phase === "command" ? "transcript" : "done";
     this.typed = 0;
+    if (this.phase === "command" && beat.transcript) {
+      this.stage.append(this.beat);
+      this.phase = "transcript";
+    } else {
+      this.phase = "done";
+    }
   }
 }

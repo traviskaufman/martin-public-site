@@ -16,6 +16,7 @@ import TopBar from "../components/TopBar.astro";
   <head>
     <meta charset="utf-8" />
     <script is:inline>
+      document.documentElement.dataset.js = "";
       try {
         const theme = localStorage.getItem("theme");
         if (theme) {

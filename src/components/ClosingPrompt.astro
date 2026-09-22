@@ -58,9 +58,9 @@ import LicenseKeyButton from "./LicenseKeyButton.astro";
 
 <script>
   const closing = document.querySelector(".closing");
-  const sheet = document.querySelector(".terminal-sheet");
+  const track = document.querySelector(".terminal-track");
 
   new IntersectionObserver(([entry]) => {
-    sheet.toggleAttribute("data-docked", entry.isIntersecting);
+    track.toggleAttribute("data-docked", entry.isIntersecting);
   }).observe(closing);
 </script>

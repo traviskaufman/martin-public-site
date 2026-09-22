@@ -1,0 +1,110 @@
+order: 4
+section: zero-slop
+continues: true
+transcript: |
+  ⏺ Write(src/personal_crm/people.py)
+
+  @dataclass(frozen=True)
+  class Every:
+      count: int
+      unit: Literal["day", "week", "month"]
+
+      def after(self, start: date) -> date:
+          match self.unit:
+              case "day":
+                  return start + timedelta(days=self.count)
+              case "week":
+                  return start + timedelta(weeks=self.count)
+              case "month":
+                  months_since_year_zero = start.year * 12 + start.month - 1 + self.count
+                  year, month_index = divmod(months_since_year_zero, 12)
+                  last_day = calendar.monthrange(year, month_index + 1)[1]
+                  return start.replace(year=year, month=month_index + 1, day=min(start.day, last_day))
+
+      def __str__(self) -> str:
+          return self.unit if self.count == 1 else f"{self.count} {self.unit}s"
+
+
+  @dataclass(frozen=True)
+  class Conversation:
+      on: date
+      note: str
+
+
+  @dataclass
+  class FollowUp:
+      number: int
+      due: date
+      note: str
+      done_on: date | None = None
+
+      @property
+      def is_open(self) -> bool:
+          return self.done_on is None
+
+
+  @dataclass
+  class Person:
+      name: str
+      conversations: list[Conversation] = field(default_factory=list)
+      follow_ups: list[FollowUp] = field(default_factory=list)
+      every: Every | None = None
+      every_set_on: date | None = None
+
+      @property
+      def next_due(self) -> date | None:
+          if self.every is None or self.every_set_on is None:
+              return None
+          last = self.last_conversation
+          return self.every.after(last.on if last else self.every_set_on)
+
+      def talk_every(self, every: Every, today: date) -> None:
+          self.every = every
+          self.every_set_on = today
+
+      @property
+      def conversations_newest_first(self) -> list[Conversation]:
+
+  ⏺ Write(tests/e2e/test_follow_ups.py)
+
+  @pytest.fixture
+  def follow_up_for_dana(crm):
+      crm("add", "Dana", today="2026-04-14")
+      crm(
+          "follow-up",
+          "Dana",
+          "2026-04-21",
+          "--note",
+          "Send proposal for her new project",
+          today="2026-04-14",
+      )
+
+
+  def test_the_follow_up_reminds_me_on_its_due_date(crm, follow_up_for_dana):
+      reminders = crm(today="2026-04-21")
+
+      assert (
+          "  #1 Dana — Send proposal for her new project (due today)" in reminders.stdout.splitlines()
+      )
+
+
+  def test_no_reminder_before_the_due_date(crm, follow_up_for_dana):
+      reminders = crm(today="2026-04-20")
+
+      assert reminders.stdout == "Nothing due today.\n"
+
+
+  def test_an_unfinished_follow_up_stays_in_front_of_me(crm, follow_up_for_dana):
+      follow_ups = crm("follow-ups", today="2026-06-01")
+
+      assert follow_ups.stdout == (
+          "#1  Dana  overdue since 2026-04-21  Send proposal for her new project\n"
+      )
+
+
+  def test_a_finished_follow_up_goes_away(crm, follow_up_for_dana):
+      done = crm("done", "1", today="2026-04-21")
+      follow_ups = crm("follow-ups", today="2026-04-21")
+
+      assert done.stdout == "Marked follow-up #1 for Dana done.\n"
+      assert follow_ups.stdout == "Nothing to follow up on\n"

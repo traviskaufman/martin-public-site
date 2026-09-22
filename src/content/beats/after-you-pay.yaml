@@ -1,6 +1,7 @@
-order: 8
+order: 6
 section: after-you-pay
 title: bash
+inlineOnPhone: false
 command: |
   curl -fsSL https://trymartin.dev/install.sh | MARTIN_API_KEY="$(cat ~/Downloads/martin-api-key.txt)" bash
 transcript: |

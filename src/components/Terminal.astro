@@ -3,17 +3,22 @@ import Pause from "../assets/pause.svg";
 import Play from "../assets/play.svg";
 import Replay from "../assets/replay.svg";
 import "../styles/terminal.css";
+import { sessionBeats, sessionEnd } from "../session";
 
-const { scenes } = Astro.props;
-const [first] = scenes;
+const { beats, beat, follows = false } = Astro.props;
+const { title, command, section } = beats[beat];
+const shown = sessionBeats(beats, follows ? sessionEnd(beats, beat) : beat);
+const titleId = `terminal-title-${follows ? "track" : section}`;
 ---
 
 <div
-  id="terminal"
   class="terminal"
   data-state="static"
+  data-beat={beat}
+  data-follows={follows || undefined}
+  data-inline={follows ? undefined : ""}
   role="region"
-  aria-labelledby="terminal-title"
+  aria-labelledby={titleId}
 >
   <div class="chrome">
     <span class="lights" aria-hidden="true">
@@ -21,8 +26,8 @@ const [first] = scenes;
       <i></i>
       <i></i>
     </span>
-    <span class="terminal-title" id="terminal-title">
-      {first.title}
+    <span class="terminal-title" id={titleId}>
+      {title}
     </span>
     <span class="controls">
       <button type="button" class="speed" aria-label="Playback speed, 2×">
@@ -40,36 +45,46 @@ const [first] = scenes;
   <div class="pane">
     <p class="command">
       <span class="prompt">&gt;</span>{" "}
-      <span class="command-text">{first.command}</span>
+      <span class="command-text">{command}</span>
     </p>
-    <pre class="transcript">{first.transcript}</pre>
+    <pre class="transcript">{shown.map((played, index) => [index > 0 && "\n\n", <span class="beat" set:text={played.transcript} />])}</pre>
     <span class="cursor" aria-hidden="true"></span>
   </div>
   <script
     is:inline
     type="application/json"
-    class="scenes"
-    set:html={JSON.stringify(scenes)}
+    class="beats"
+    set:html={JSON.stringify(beats)}
   ></script>
 </div>
 
 <script>
   import { TerminalStage } from "../scripts/terminal-stage";
-  import { SceneFollower } from "../scripts/scene-follower";
+  import { BeatFollower } from "../scripts/beat-follower";
 
-  const terminal = document.getElementById("terminal");
-  const scenes = JSON.parse(terminal.querySelector(".scenes").textContent);
-  const stage = new TerminalStage(terminal);
-  const follower = new SceneFollower(scenes, (scene) => stage.show(scene));
+  document.documentElement.dataset.js = "ready";
 
-  const terminalIsVisible = new IntersectionObserver((entries, observer) => {
-    if (!entries.some((entry) => entry.isIntersecting)) {
-      return;
-    }
-    observer.disconnect();
-    import("../scripts/playback").then(({ startPlayback }) =>
-      startPlayback(stage, follower),
-    );
+  document.querySelectorAll(".terminal[data-beat]").forEach((terminal) => {
+    const beats = JSON.parse(terminal.querySelector(".beats").textContent);
+    const first = Number(terminal.dataset.beat);
+    const stage = new TerminalStage(terminal, beats);
+    const tabs = terminal.closest(".comparison-tabs");
+    let playback;
+    const follower = terminal.hasAttribute("data-follows")
+      ? new BeatFollower(beats, first, (index) => {
+          tabs?.setAttribute("data-section", beats[index].section);
+          playback?.change(index);
+        })
+      : null;
+
+    new IntersectionObserver((entries, observer) => {
+      if (!entries.some((entry) => entry.isIntersecting)) {
+        return;
+      }
+      observer.disconnect();
+      import("../scripts/playback").then(({ startPlayback }) => {
+        playback = startPlayback(stage, follower?.current ?? first);
+      });
+    }).observe(terminal);
   });
-  terminalIsVisible.observe(terminal);
 </script>

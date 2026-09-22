@@ -1,6 +1,7 @@
-order: 9
+order: 7
 section: faq
 title: claude --agent martin
+inlineOnPhone: false
 command: |
   What are your caveats? Be honest — what should I know before I pay for you?
 transcript: |

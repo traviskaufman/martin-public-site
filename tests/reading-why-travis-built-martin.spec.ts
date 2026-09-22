@@ -18,20 +18,18 @@ test("the thesis is stated", async ({ page }) => {
 
   const order = await page.evaluate(() => {
     const sections = Array.from(document.querySelectorAll("section"));
-    const testingSection = sections.find(
-      (el) =>
-        el.querySelector("h2")?.textContent?.trim() ===
-        "Testing and robustness",
+    const zeroSlopSection = sections.find(
+      (el) => el.querySelector("h2")?.textContent?.trim() === "Zero slop",
     );
     const whySection = sections.find(
       (el) =>
         el.querySelector("h2")?.textContent?.trim() === "Why Travis built me",
     );
-    if (!testingSection || !whySection) {
+    if (!zeroSlopSection || !whySection) {
       return null;
     }
     return !!(
-      testingSection.compareDocumentPosition(whySection) &
+      zeroSlopSection.compareDocumentPosition(whySection) &
       Node.DOCUMENT_POSITION_FOLLOWING
     );
   });

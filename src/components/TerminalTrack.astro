@@ -1,0 +1,34 @@
+<aside class="terminal-track" aria-label="Terminal">
+  <slot />
+</aside>
+
+<style>
+  .terminal-track {
+    position: relative;
+  }
+
+  .terminal-track[data-docked] {
+    visibility: hidden;
+  }
+
+  .terminal-track > :global(.comparison-tabs) {
+    position: sticky;
+    top: 5.5rem;
+  }
+
+  .terminal-track :global(.terminal),
+  .terminal-track :global(.vanilla-panel) {
+    height: 35rem;
+    max-height: calc(100vh - 10.5rem);
+  }
+
+  .terminal-track :global(.vanilla-panel) {
+    overflow-y: auto;
+  }
+
+  @media (max-width: 899px) {
+    .terminal-track {
+      display: none;
+    }
+  }
+</style>

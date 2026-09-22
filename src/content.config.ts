@@ -13,23 +13,27 @@ const comparisons = defineCollection({
   }),
 });
 
-const scenes = defineCollection({
-  loader: glob({ pattern: "*.yaml", base: "./src/content/scenes" }),
+const beats = defineCollection({
+  loader: glob({ pattern: "*.yaml", base: "./src/content/beats" }),
   schema: z
     .object({
       order: z.number().int(),
       section: z.string().min(1),
-      title: z.string().min(1),
-      entry: z.enum(["playing", "finished"]).default("playing"),
+      continues: z.boolean().default(false),
+      title: z.string().min(1).optional(),
       command: z.string().min(1).optional(),
       transcript: z.string().min(1).optional(),
       comparison: reference("comparisons").optional(),
       startAt: z.string().min(1).optional(),
-      differentiator: z.string().min(1).optional(),
+      inlineOnPhone: z.boolean().default(true),
     })
-    .refine((scene) => scene.transcript || scene.comparison, {
-      message: "a scene needs a transcript or a comparison",
+    .refine((beat) => beat.continues !== Boolean(beat.title && beat.command), {
+      message:
+        "an opening beat has a title and a command; a continuing beat has neither",
+    })
+    .refine((beat) => !beat.continues || beat.transcript || beat.comparison, {
+      message: "a continuing beat needs a transcript or a comparison",
     }),
 });
 
-export const collections = { comparisons, scenes };
+export const collections = { comparisons, beats };

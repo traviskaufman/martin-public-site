@@ -1,0 +1,135 @@
+---
+const { name, follows = false } = Astro.props;
+const withMartinId = `${name}-with-martin`;
+const withoutMartinId = `${name}-without-martin`;
+const martinPanelId = `${name}-martin-panel`;
+const vanillaPanelId = `${name}-vanilla-panel`;
+---
+
+<div
+  class="comparison-tabs"
+  data-tab="martin"
+  data-follows={follows || undefined}
+>
+  <div class="tabs" role="tablist" aria-label="Compare">
+    <button
+      type="button"
+      role="tab"
+      id={withMartinId}
+      aria-selected="true"
+      aria-controls={martinPanelId}
+      data-shows="martin"
+    >
+      With Martin
+    </button>
+    <button
+      type="button"
+      role="tab"
+      id={withoutMartinId}
+      aria-selected="false"
+      aria-controls={vanillaPanelId}
+      tabindex="-1"
+      data-shows="vanilla"
+    >
+      Without Martin
+    </button>
+  </div>
+  <div
+    class="panel"
+    role="tabpanel"
+    id={martinPanelId}
+    aria-labelledby={withMartinId}
+    data-panel="martin"
+  >
+    <slot name="martin" />
+  </div>
+  <div
+    class="panel"
+    role="tabpanel"
+    id={vanillaPanelId}
+    aria-labelledby={withoutMartinId}
+    data-panel="vanilla"
+    hidden
+  >
+    <slot name="vanilla" />
+  </div>
+</div>
+
+<style>
+  .comparison-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .tabs button {
+    margin-bottom: -1px;
+    padding: 0.5rem 0 0.75rem;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .tabs button[aria-selected="true"] {
+    border-bottom-color: var(--color-accent);
+    color: var(--color-heading);
+  }
+
+  .tabs button:focus-visible {
+    outline: 2px solid var(--color-heading);
+    outline-offset: 2px;
+  }
+
+  .panel[hidden] {
+    display: none;
+  }
+
+  .comparison-tabs[data-follows] .tabs {
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 150ms,
+      visibility 0s 150ms;
+  }
+
+  .comparison-tabs[data-follows][data-comparing] .tabs {
+    visibility: visible;
+    opacity: 1;
+    transition:
+      opacity 150ms,
+      visibility 0s;
+  }
+
+  @media (min-width: 900px) {
+    .comparison-tabs:not([data-follows]) {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .comparison-tabs[data-follows] .tabs,
+    .comparison-tabs[data-follows][data-comparing] .tabs {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { ComparisonTabs } from "../scripts/comparison-tabs";
+
+  document
+    .querySelectorAll(".comparison-tabs")
+    .forEach((element) => new ComparisonTabs(element));
+</script>
