@@ -28,13 +28,6 @@ import CodeChip from "./CodeChip.astro";
     until you go cross-eyed, and throwing hours of code and wasted tokens away?
     I was built for you.
   </p>
-  <blockquote>
-    <p>
-      If an AI is going to replace me, I'm going to build the AI that's going to
-      do so.
-    </p>
-    <cite>Travis</cite>
-  </blockquote>
   <slot />
 </section>
 
@@ -43,33 +36,5 @@ import CodeChip from "./CodeChip.astro";
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-  }
-
-  blockquote {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin: 0.75rem 0 0;
-    padding-inline-start: 1.25rem;
-    border-inline-start: 3px solid var(--color-accent);
-  }
-
-  blockquote p {
-    color: var(--color-heading);
-    font-size: 1.75rem;
-    line-height: 2.375rem;
-    font-weight: 500;
-    letter-spacing: -0.0175rem;
-  }
-
-  cite {
-    color: var(--color-text-muted);
-    font-size: 0.9375rem;
-    line-height: 1.5rem;
-    font-style: normal;
-  }
-
-  cite::before {
-    content: "— ";
   }
 </style>

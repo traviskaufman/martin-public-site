@@ -79,16 +79,3 @@ test("the fifteen years are stated", async ({ page }) => {
   );
   await expect(section).toContainText("distilled into me");
 });
-
-test("Travis's line is quoted", async ({ page }) => {
-  await page.goto("/");
-
-  const section = getSection(page, "Why Travis built me");
-  await section.scrollIntoViewIfNeeded();
-
-  const quote = section.locator("blockquote");
-  await expect(quote).toContainText(
-    "If an AI is going to replace me, I'm going to build the AI that's going to do so.",
-  );
-  await expect(quote.locator("cite")).toHaveText("Travis");
-});
