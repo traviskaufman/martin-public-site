@@ -3,4 +3,7 @@ import { defineConfig } from "astro/config";
 
 export default defineConfig({
   site: "https://trymartin.dev",
+  build: {
+    format: "file",
+  },
 });

@@ -1,5 +1,4 @@
 ---
-import "../styles/global.css";
 import {
   headline,
   previewDescription,
@@ -7,28 +6,14 @@ import {
   searchDescription,
   tabTitle,
 } from "../pitch";
+import Site from "./Site.astro";
 import VisitCounter from "../components/VisitCounter.astro";
-import Footer from "../components/Footer.astro";
 import TopBar from "../components/TopBar.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <script is:inline>
-      document.documentElement.dataset.js = "";
-      try {
-        const theme = localStorage.getItem("theme");
-        if (theme) {
-          document.documentElement.dataset.theme = theme;
-        }
-      } catch {}
-    </script>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+<Site title={tabTitle}>
+  <Fragment slot="head">
     <link rel="alternate" type="text/markdown" href="/llms.txt" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
     <meta name="description" content={searchDescription} />
     <meta property="og:site_name" content="Martin" />
     <meta property="og:title" content={previewTitle} />
@@ -43,28 +28,8 @@ import TopBar from "../components/TopBar.astro";
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={headline} />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>{tabTitle}</title>
-    <link
-      rel="preload"
-      href="/fonts/geist-latin-wght-normal.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/geist-mono-latin-wght-normal.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
     <VisitCounter />
-  </head>
-  <body>
-    <main>
-      <slot />
-    </main>
-    <Footer />
-    <TopBar />
-  </body>
-</html>
+  </Fragment>
+  <slot />
+  <TopBar slot="after-footer" />
+</Site>

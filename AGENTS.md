@@ -18,7 +18,8 @@ npm run build
 
 ## Layout
 
-- `src/pages/index.astro` — the only page: a content column of sections (the hero opens with the mark, 64px tall, above the headline; then one section per entry of `src/sections.ts`, each an `<h2>` and a byline) beside a terminal track, then the closing prompt; `src/layouts/Pitch.astro` is its shell (head, meta tags, the theme guard, analytics, footer, top bar).
+- `src/pages/thanks.astro` — the thank-you page Stripe redirects buyers to: the mark, "Your key is on its way", the inbox line, a "Next steps:" checklist, and the support line; `noindex`, no top bar, no analytics. `src/layouts/Site.astro` is the shell it shares with the pitch (head, theme guard, fonts, footer).
+- `src/pages/index.astro` — the pitch: a content column of sections (the hero opens with the mark, 64px tall, above the headline; then one section per entry of `src/sections.ts`, each an `<h2>` and a byline) beside a terminal track, then the closing prompt; `src/layouts/Pitch.astro` builds on `Site.astro` with the pitch's meta tags, analytics, and top bar.
 - `src/components/` — one `.astro` file per Figma component, in page order: `LicenseKeyButton`, `SourceLink`, `ComparisonTabs` ("With Martin" | "Without Martin") holding a `Terminal` and a `ComparisonVanilla` (the vanilla panel), `WhyTravisBuiltMe` (its slot takes the phone's terminal), `AfterYouPay` with `Step`, `CodeChip`, `CodeBlock`, `Faq` with `FaqItem`, `ClosingPrompt`, `Footer`; `TerminalTrack` is the desktop column, one `ComparisonTabs` around the one terminal that follows the scroll; on a phone each differentiator section holds its own `ComparisonTabs` and inline `Terminal`; `TopBar` holds `ThemeToggle`; `Mark` is the logo from `src/assets/mark.svg`, teal in the top bar and muted in the footer; `VisitCounter` is the analytics snippet.
 - `src/assets/` — the mark and the icons as `.svg` files, imported as components.
 - `src/pitch.ts`, `src/sections.ts` (the three differentiator sections and the comparisons each one shows), `src/faq.ts`, `src/links.ts` — copy and URLs as constants; `src/content/comparisons/*.yaml` — the transcripts (never reworded); `src/content/beats/*.yaml` — what the terminal plays under each section, resolved in order by `src/beats.ts` into sessions (`src/session.ts`): an opening beat carries a `title` and `command`, a continuing beat (`continues: true`) is appended to the session on screen.
@@ -29,7 +30,8 @@ npm run build
 - `functions/index.ts` — the site's one Cloudflare Pages Function: a request for `/` whose `Accept` header names `text/markdown` (Claude Code's fetch sends `text/markdown, text/html, */*`) is answered with `llms.txt`; every other request falls through to the static page. `wrangler pages deploy dist` picks the directory up from the repository root.
 - `public/llms.txt` — the install instructions for agents, served in place of the page to an agent that asks for markdown and named in the page head as `<link rel="alternate" type="text/markdown">`; it tells them to read the key from `~/Downloads/martin-api-key.txt` and never ask for it.
 - `.github/workflows/deploy.yml` — every push to `main` runs the checks and tests, builds, and deploys `dist/` to Cloudflare Pages.
-- `tests/*.spec.ts` — Playwright end-to-end tests; every test opens the site in a browser and asserts what a visitor sees.
+- `tests/*.spec.ts` — Playwright end-to-end tests; every test opens the site in a browser and asserts what a visitor sees. `tests/posthog.ts` holds the PostHog interception and bot-detection spoof for analytics tests.
+- `.claude/skills/testing-stripe-flows/` — how to pay on the Stripe test-mode link and land on the preview at https://preview.trymartin-dev.pages.dev/thanks; run it before changing a payment link.
 - `.martin/` — Martin's build ledger. Only `.martin/README.md` is tracked.
 
 ## Rules
