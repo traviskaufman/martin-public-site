@@ -72,7 +72,7 @@ test.describe("in a 1440px wide window", () => {
       .click();
     await page.waitForURL(/buy\.stripe\.com/);
 
-    await expect(page.locator('input[name="customUnitAmount"]')).toHaveValue(
+    await expect(page.getByTestId("product-summary-total-amount")).toHaveText(
       "$5.00",
     );
   });

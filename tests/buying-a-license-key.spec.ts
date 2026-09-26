@@ -37,7 +37,8 @@ test("The button takes me to checkout", async ({ page }) => {
   await page.waitForURL(/buy\.stripe\.com/);
 
   expect(page.url()).toContain("buy.stripe.com");
-  await expect(page.locator('input[name="customUnitAmount"]')).toHaveValue(
+  await expect(page.getByTestId("product-summary-total-amount")).toHaveText(
     fiveDollarsOrItsLocalEquivalent,
   );
+  await expect(page.locator('input[name="customUnitAmount"]')).toHaveCount(0);
 });

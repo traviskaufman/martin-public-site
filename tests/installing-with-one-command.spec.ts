@@ -229,7 +229,7 @@ test("the instructions for agents are served", async ({ request }) => {
 
   expect(response.status()).toBe(200);
   expect(instructions).toContain(
-    "https://buy.stripe.com/cNi14mdE1eMY2sG3Zi7kc00",
+    "https://buy.stripe.com/00w9ASeI5eMY8R453m7kc01",
   );
   expect(instructions).toContain(
     'curl -fsSL https://trymartin.dev/install.sh | MARTIN_API_KEY="$(cat ~/Downloads/martin-api-key.txt)" bash',

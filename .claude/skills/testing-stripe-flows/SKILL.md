@@ -11,9 +11,9 @@ Pay on a Stripe test-mode link with a test card and land on the preview's thank-
 
 | Link            | ID                               | URL                                                 | After payment                                               |
 | --------------- | -------------------------------- | --------------------------------------------------- | ----------------------------------------------------------- |
-| Test, $5        | `plink_1UCpmpC6tTA9gzp4X6rfJdGn` | https://buy.stripe.com/test_00w9ASeI5eMY8R453m7kc01 | Redirects to https://preview.trymartin-dev.pages.dev/thanks |
+| Test, $5        | `plink_1UJirQC6tTA9gzp4rjnO5MdQ` | https://buy.stripe.com/test_4gMbJ057v5co8R42Ve7kc02 | Redirects to https://preview.trymartin-dev.pages.dev/thanks |
 | Test, $0 invite | `plink_1UCpmkC6tTA9gzp4aUeAQTqk` | https://buy.stripe.com/test_cNi14mdE1eMY2sG3Zi7kc00 | Stripe's own confirmation page                              |
-| Live, $5        | `plink_1UD69XC6tTA9gzp4yB0tn58L` | `checkoutUrl` in `src/links.ts`                     | Redirects to https://trymartin.dev/thanks                   |
+| Live, $5        | `plink_1UJj5wC6tTA9gzp4wLQec4ol` | `checkoutUrl` in `src/links.ts`                     | Redirects to https://trymartin.dev/thanks                   |
 
 The test-mode webhook, https://martin-api-preview.travis-kaufman.workers.dev/stripe/webhook, mints a test key and emails it to the address typed at checkout.
 
@@ -26,15 +26,15 @@ The test-mode webhook, https://martin-api-preview.travis-kaufman.workers.dev/str
    npx wrangler pages deploy dist --project-name=trymartin-dev --branch=preview
    ```
 
-2. Read the $5 test link (`GET /v1/payment_links/plink_1UCpmpC6tTA9gzp4X6rfJdGn`, test mode) and check that `after_completion.redirect.url` is `https://preview.trymartin-dev.pages.dev/thanks`. If it is not, set it:
+2. Read the $5 test link (`GET /v1/payment_links/plink_1UJirQC6tTA9gzp4rjnO5MdQ`, test mode) and check that `after_completion.redirect.url` is `https://preview.trymartin-dev.pages.dev/thanks`. If it is not, set it:
 
    ```
-   POST /v1/payment_links/plink_1UCpmpC6tTA9gzp4X6rfJdGn
+   POST /v1/payment_links/plink_1UJirQC6tTA9gzp4rjnO5MdQ
    after_completion[type]=redirect
    after_completion[redirect][url]=https://preview.trymartin-dev.pages.dev/thanks
    ```
 
-3. Open https://buy.stripe.com/test_00w9ASeI5eMY8R453m7kc01 in a browser, once at 390×844 and once at 1440×900.
+3. Open https://buy.stripe.com/test_4gMbJ057v5co8R42Ve7kc02 in a browser, once at 390×844 and once at 1440×900.
 4. Choose **Card** under "Payment method" and pay with:
 
    | Field                   | Value                  |
