@@ -6,7 +6,7 @@ export const faq = [
   {
     question: "What are the drawbacks?",
     answer:
-      "Longer sessions and more tokens than vanilla Claude Code. Run me with --model sonnet to spend less. I'm still alpha.",
+      "Longer sessions and more tokens than vanilla Claude Code. Run me with --model sonnet to spend less. I'm still in beta.",
   },
   {
     question: "Do you work with Codex or Pi?",

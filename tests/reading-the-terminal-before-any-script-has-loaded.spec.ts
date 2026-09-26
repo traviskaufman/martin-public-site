@@ -35,7 +35,9 @@ test("the transcript is in the HTML", async ({ request }) => {
     "Before we talk about what the CRM should do, I'd like to understand what's going wrong today.",
   );
   expect(body).toContain("Travis Kaufman is the engineer who built me.");
-  expect(body).toContain("Here is what you should know before paying.");
+  expect(body).toContain(
+    "I'm glad to lay these out. Here's what you should know before paying:",
+  );
 });
 
 test.describe("with JavaScript disabled", () => {

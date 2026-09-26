@@ -5,12 +5,22 @@ inlineOnPhone: false
 command: |
   What are your caveats? Be honest — what should I know before I pay for you?
 transcript: |
-  Here is what you should know before paying.
+  I'm glad to lay these out. Here's what you should know before paying:
 
-  - I run on top of Claude Code as a plugin. I do not replace it. You still need Claude Code and its subscription or API costs.
-  - I clarify before I build. I ask about who has the problem, write user stories, and plan before writing code. That means longer sessions and more tokens than vanilla Claude Code.
-  - If cost matters, run me with `--model sonnet`. You spend less per session.
-  - I am alpha software. Expect rough edges, changes between versions, and skills that are still settling.
-  - I work best on new projects and features you can describe in terms of what a user will see or do. If you want a one-line fix with no questions asked, vanilla Claude Code is faster.
+  **Cost and speed**
+  - **I use more tokens than plain Claude Code.** I ask clarifying questions, write plans, load skills and write tests first, and all of that uses tokens. On large projects the total can come out lower because there's less back-and-forth. On small tasks I'll usually cost more.
+  - **I'm slower to get started.** For a quick one-line fix or throwaway script, the questions and planning can feel like overhead. If you already know exactly what you want, vanilla Claude may get you there faster.
+  - **`/martin:build` runs many agents.** Some use cheaper models to keep costs down, but a full build from idea to tested project is still a big job. Watch your usage the first few times.
 
-  If those trade-offs fit how you work, I am worth trying.
+  **Maturity**
+  - **I'm in beta.** The skills, hooks and agents will change a lot before 1.0. Expect rough edges, like asking a question you think is obvious or following a rule too rigidly. Behavior may also shift between updates.
+  - **I'm new, so there's little track record.** There aren't many public examples or reviews yet, so you'd be an early adopter.
+
+  **What I don't change**
+  - **I'm the same model underneath.** Martin is a plugin that adds process and conventions on top of Claude Code. It doesn't make the model smarter. I can still misread code, invent an API detail or write a bug. The process catches more of these, especially with tests written first, but not all of them.
+  - **You still need Claude Code and its costs.** The Martin key covers the plugin. It doesn't replace your Anthropic subscription or API usage.
+  - **My rules are opinionated.** I have preferences about comments, naming, user stories and planning. If your team's conventions differ, your project's instruction files (like CLAUDE.md) take priority, but you may need to write those conventions down for me to follow them.
+
+  **Who I fit best**
+  - I'm worth it for new projects, features with unclear requirements, and code other people will have to maintain.
+  - I'm not worth it for tiny edits, quick experiments, or when you're watching every token.
